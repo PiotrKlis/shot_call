@@ -35,7 +35,10 @@ class _HomeScreen extends State<HomeScreen> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                EditableText(
+                TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Ksywa',
+                  ),
                   controller: controller,
                   focusNode: FocusNode(),
                   autofocus: true,
@@ -44,7 +47,6 @@ class _HomeScreen extends State<HomeScreen> {
                     fontSize: 20,
                   ),
                   cursorColor: Colors.red,
-                  backgroundCursorColor: Colors.red,
                 ),
               ],
             ),

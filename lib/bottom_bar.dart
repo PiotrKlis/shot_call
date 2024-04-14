@@ -32,11 +32,11 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.call),
+            icon: Icon(Icons.percent),
             label: 'Wód-call',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
+            icon: Icon(Icons.public),
             label: 'Imprezki',
           ),
         ],

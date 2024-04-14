@@ -51,20 +51,18 @@ class _HomeScreen extends State<HomeScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Jedziemy z tematem'),
-              onPressed: () {
-                sharedPreferences.setString(
-                    SharedPrefs.nickname, controller.text);
-                setState(() {
+                child: const Text('Jedziemy'),
+                onPressed: () async {
+                  sharedPreferences.setString(
+                      SharedPrefs.nickname, controller.text);
                   nickname = controller.text;
-                  FirebaseFirestore.instance
+                  await FirebaseFirestore.instance
                       .collection('users')
-                      .add({'nickname': nickname,
-                  });
-                });
-                Navigator.of(context).pop();
-              },
-            ),
+                      .doc(nickname.toString())
+                      .set({'alarm': false});
+                  setState(() {});
+                  Navigator.of(context).pop();
+                }),
           ],
         );
       },
@@ -77,14 +75,40 @@ class _HomeScreen extends State<HomeScreen> {
       appBar: AppBar(
         title: Center(child: Text("@$nickname")),
       ),
-      body: SafeArea(
-        child: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              //TODO: send shot call
-            },
-            child: const Text('Shot call'),
-          ),
+      body: Container(
+        margin: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+                'Wciśnij przycisk aby wezwać pomoc w razie zagrożenia bycia niedopitym.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24)),
+            const SizedBox(height: 60),
+            ElevatedButton(
+              onPressed: () {
+                FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(nickname.toString())
+                    .set({'alarm': true});
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('🚨WÓD - CALL 🚨\n 🚨WEZWIJ POMOC 🚨',
+                    textAlign: TextAlign.center),
+              ),
+            ),
+            const SizedBox(height: 60),
+            ElevatedButton(
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(nickname.toString())
+                      .set({'alarm': false});
+                },
+                child: const Text('😌 KRYZYS ZAŻEGNANY 😌')),
+          ],
         ),
       ),
     );

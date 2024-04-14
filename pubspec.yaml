@@ -4,12 +4,15 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 environment:
   sdk: '>=3.3.1 <4.0.0'
+  flutter: ^3.19.3
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
   shared_preferences: ^2.2.3
+  cloud_firestore: ^4.16.1
+  firebase_core: ^2.29.0
 
 dev_dependencies:
   flutter_test:

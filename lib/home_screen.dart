@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shot_call/shared_prefs.dart';
 
@@ -11,10 +11,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreen extends State<HomeScreen> {
   var nickname = sharedPreferences.get(SharedPrefs.nickname) ?? '';
+
   @override
   void initState() {
     super.initState();
-    final shouldShowDialog = sharedPreferences.get(SharedPrefs.nickname) == null;
+    final shouldShowDialog =
+        sharedPreferences.get(SharedPrefs.nickname) == null;
     if (shouldShowDialog) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showNicknameDialog(context);
@@ -47,13 +49,18 @@ class _HomeScreen extends State<HomeScreen> {
               ],
             ),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               child: const Text('Jedziemy z tematem'),
               onPressed: () {
-                sharedPreferences.setString(SharedPrefs.nickname, controller.text);
+                sharedPreferences.setString(
+                    SharedPrefs.nickname, controller.text);
                 setState(() {
                   nickname = controller.text;
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .add({'nickname': nickname,
+                  });
                 });
                 Navigator.of(context).pop();
               },
@@ -74,7 +81,7 @@ class _HomeScreen extends State<HomeScreen> {
         child: Center(
           child: ElevatedButton(
             onPressed: () {
-              print('Button pressed');
+              //TODO: send shot call
             },
             child: const Text('Shot call'),
           ),

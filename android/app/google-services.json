@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "482820068298",
+    "project_id": "call-the-shots-eea84",
+    "storage_bucket": "call-the-shots-eea84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482820068298:android:b985fecc85ef11ad3eb533",
+        "android_client_info": {
+          "package_name": "com.mobile.apps.shot_call"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR4SjHicTGZUPsHCFab734wPk0YwoVcqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

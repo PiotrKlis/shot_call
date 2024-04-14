@@ -1,8 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shot_call/bottom_bar.dart';
 import 'package:shot_call/home_screen.dart';
 import 'package:shot_call/shared_prefs.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -21,7 +25,7 @@ class MyApp extends StatelessWidget {
         future: SharedPrefs().init(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return const HomeScreen();
+            return const BasicBottomNavBar();
           } else {
             return Container();
           }

@@ -32,41 +32,65 @@ class _HomeScreen extends State<HomeScreen> {
       ),
       body: Container(
         margin: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-                'Wciśnij przycisk aby wezwać pomoc w razie zagrożenia bycia niedopitym.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24)),
-            const SizedBox(height: 60),
-            ElevatedButton(
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('🚨WÓD - CALL 🚨\n 🚨WEZWIJ POMOC 🚨',
-                    textAlign: TextAlign.center),
-              ),
-              onPressed: () async {await _shotsCallPressed();},
-            ),
-            const SizedBox(height: 60),
-            ElevatedButton(
-                onPressed: () {
-                  FirebaseFirestore.instance
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('parties')
+              .doc(nickname.toString())
+              .snapshots(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                    'Wciśnij przycisk aby wezwać pomoc w razie zagrożenia bycia niedopitym.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24)),
+                const SizedBox(height: 60),
+                ElevatedButton(
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('🚨WÓD - CALL 🚨\n 🚨 WEZWIJ POMOC 🚨',
+                        textAlign: TextAlign.center),
+                  ),
+                  onPressed: () async {
+                    await _shotsCallPressed();
+                  },
+                ),
+                const SizedBox(height: 60),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
                       .collection('users')
                       .doc(nickname.toString())
-                      .set({'alarm': false});
-                },
-                child: const Text('😌 KRYZYS ZAŻEGNANY 😌')),
-          ],
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData &&
+                        snapshot.data?['alarm'] as bool == true) {
+                      return ElevatedButton(
+                        child: const Text(
+                            '😌 ODWOŁAJ - KRYZYS ZOSTAŁ ZAŻEGNANY 😌'),
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(nickname.toString())
+                              .set({'alarm': false});
+                        },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
   Future<void> _shotsCallPressed() async {
-    final nickname =
-        sharedPreferences.getString(SharedPrefs.nickname);
+    final nickname = sharedPreferences.getString(SharedPrefs.nickname);
     await _addAlarmToUser(nickname);
     List<String> parties = await _getParties(nickname);
     for (final party in parties) {

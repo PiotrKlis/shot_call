@@ -106,18 +106,15 @@ class _HomeScreen extends State<HomeScreen> {
 
   Future<void> _shotsCallPressed() async {
     final nickname = sharedPreferences.getString(SharedPrefs.nickname);
+    final party = sharedPreferences.getString(SharedPrefs.partyName);
     await _addAlarmToUser(nickname);
-    List<String> parties = await _getParties(nickname);
-    for (final party in parties) {
-      _addAlarmToParty(party, nickname);
-    }
+    _addAlarmToParty(party, nickname);
   }
 
-  void _addAlarmToParty(String party, String? nickname) {
-    FirebaseFirestore.instance
-        .collection('parties')
-        .doc(party)
-        .update({'alarm': FieldValue.arrayUnion([nickname])});
+  void _addAlarmToParty(String? party, String? nickname) {
+    FirebaseFirestore.instance.collection('parties').doc(party).update({
+      'alarm': FieldValue.arrayUnion([nickname])
+    });
   }
 
   Future<void> _addAlarmToUser(String? nickname) async {

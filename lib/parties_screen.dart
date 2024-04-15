@@ -114,7 +114,8 @@ class PartiesScreen extends StatelessWidget {
                       .update({
                     'parties': FieldValue.arrayUnion([partyNameController.text])
                   });
-                  sharedPreferences.setString(SharedPrefs.partyName, partyNameController.text);
+                  sharedPreferences.setString(
+                      SharedPrefs.partyName, partyNameController.text);
                   Navigator.of(context).pop();
                 }),
           ],
@@ -123,7 +124,8 @@ class PartiesScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _showPartyPasswordDialog(BuildContext context, String partyId) async {
+  Future<void> _showPartyPasswordDialog(
+      BuildContext context, String partyId) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -170,9 +172,7 @@ class PartiesScreen extends StatelessWidget {
                     await FirebaseFirestore.instance
                         .collection('users')
                         .doc(sharedPreferences.getString(SharedPrefs.nickname))
-                        .update({
-                      'parties': FieldValue.arrayUnion([partyId])
-                    });
+                        .update({'parties': partyId});
                     sharedPreferences.setString(SharedPrefs.partyName, partyId);
                     Navigator.pop(context);
                     Navigator.push(

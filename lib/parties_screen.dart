@@ -9,7 +9,9 @@ class PartiesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Imprezki'),),
+        appBar: AppBar(
+          title: Text('Imprezki'),
+        ),
         body: Container(
           margin: const EdgeInsets.all(
             24,
@@ -26,8 +28,7 @@ class PartiesScreen extends StatelessWidget {
                     if (snapshot.hasData && snapshot.data != null) {
                       return ListView.separated(
                           shrinkWrap: true,
-                          separatorBuilder: (context, index) =>
-                              const Divider(),
+                          separatorBuilder: (context, index) => const Divider(),
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             final id = snapshot.data!.docs[index].id;
@@ -107,6 +108,12 @@ class PartiesScreen extends StatelessWidget {
                     'participants':
                         sharedPreferences.getString(SharedPrefs.nickname)
                   });
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(sharedPreferences.getString(SharedPrefs.nickname))
+                      .set({
+                    'parties': FieldValue.arrayUnion([partyNameController.text])
+                  });
                   Navigator.of(context).pop();
                 }),
           ],
@@ -158,6 +165,12 @@ class PartiesScreen extends StatelessWidget {
                         .update({
                       'participants': FieldValue.arrayUnion(
                           [sharedPreferences.getString(SharedPrefs.nickname)])
+                    });
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(sharedPreferences.getString(SharedPrefs.nickname))
+                        .set({
+                      'parties': FieldValue.arrayUnion([id])
                     });
                     Navigator.pop(context);
                     Navigator.push(

@@ -24,6 +24,82 @@ class _HomeScreen extends State<HomeScreen> {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(child: Text("@$nickname")),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+                'Wciśnij przycisk aby wezwać pomoc w razie zagrożenia bycia niedopitym.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24)),
+            const SizedBox(height: 60),
+            ElevatedButton(
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('🚨WÓD - CALL 🚨\n 🚨WEZWIJ POMOC 🚨',
+                    textAlign: TextAlign.center),
+              ),
+              onPressed: () async {await _shotsCallPressed();},
+            ),
+            const SizedBox(height: 60),
+            ElevatedButton(
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(nickname.toString())
+                      .set({'alarm': false});
+                },
+                child: const Text('😌 KRYZYS ZAŻEGNANY 😌')),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _shotsCallPressed() async {
+    final nickname =
+        sharedPreferences.getString(SharedPrefs.nickname);
+    await _addAlarmToUser(nickname);
+    List<String> parties = await _getParties(nickname);
+    for (final party in parties) {
+      _addAlarmToParty(party, nickname);
+    }
+  }
+
+  void _addAlarmToParty(String party, String? nickname) {
+    FirebaseFirestore.instance
+        .collection('parties')
+        .doc(party)
+        .set({'alarm': nickname});
+  }
+
+  Future<void> _addAlarmToUser(String? nickname) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(nickname)
+        .set({'alarm': true});
+  }
+
+  Future<List<String>> _getParties(String? nickname) async {
+    final user = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(nickname)
+        .get();
+
+    final parties = (user.data()?['parties'] as List<dynamic>)
+        .map((e) => e.toString())
+        .toList();
+    return parties;
+  }
+
   Future<void> _showNicknameDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -68,51 +144,6 @@ class _HomeScreen extends State<HomeScreen> {
           ],
         );
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text("@$nickname")),
-      ),
-      body: Container(
-        margin: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-                'Wciśnij przycisk aby wezwać pomoc w razie zagrożenia bycia niedopitym.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24)),
-            const SizedBox(height: 60),
-            ElevatedButton(
-              onPressed: () {
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(nickname.toString())
-                    .set({'alarm': true});
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('🚨WÓD - CALL 🚨\n 🚨WEZWIJ POMOC 🚨',
-                    textAlign: TextAlign.center),
-              ),
-            ),
-            const SizedBox(height: 60),
-            ElevatedButton(
-                onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(nickname.toString())
-                      .set({'alarm': false});
-                },
-                child: const Text('😌 KRYZYS ZAŻEGNANY 😌')),
-          ],
-        ),
-      ),
     );
   }
 }

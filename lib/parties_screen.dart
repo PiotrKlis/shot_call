@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shot_call/party_participants.dart';
+import 'package:shot_call/party_participants_screen.dart';
 import 'package:shot_call/shared_prefs.dart';
 
 class PartiesScreen extends StatelessWidget {
@@ -9,45 +9,39 @@ class PartiesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-          child: Container(
-            margin: const EdgeInsets.all(
-              24,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const Text('Imprezy', style: TextStyle(fontSize: 30)),
-                  Container(
-                      margin: const EdgeInsets.only(top: 24),
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('parties')
-                            .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            return ListView.separated(
-                                shrinkWrap: true,
-                                separatorBuilder: (context, index) =>
-                                    const Divider(),
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final id = snapshot.data!.docs[index].id;
-                                  return ListTile(
-                                      title: Text(id),
-                                      onTap: () {
-                                        _showPartyPasswordDialog(context, id);
-                                      });
+      appBar: AppBar(title: Text('Imprezki'),),
+        body: Container(
+          margin: const EdgeInsets.all(
+            24,
+          ),
+          child: SingleChildScrollView(
+            child: Container(
+                margin: const EdgeInsets.only(top: 24),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('parties')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return ListView.separated(
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) =>
+                              const Divider(),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final id = snapshot.data!.docs[index].id;
+                            return ListTile(
+                                title: Text(id),
+                                onTap: () {
+                                  _showPartyPasswordDialog(context, id);
                                 });
-                          } else {
-                            return Container();
-                          }
-                        },
-                      )),
-                ],
-              ),
-            ),
+                          });
+                    } else {
+                      return Container();
+                    }
+                  },
+                )),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -128,7 +122,7 @@ class PartiesScreen extends StatelessWidget {
       builder: (BuildContext context) {
         final TextEditingController controller = TextEditingController();
         return AlertDialog(
-          title: const Center(child: Text('Jaka ksywa wariacie')),
+          title: const Center(child: Text('Jakie hasło wariacie')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -165,6 +159,7 @@ class PartiesScreen extends StatelessWidget {
                       'participants': FieldValue.arrayUnion(
                           [sharedPreferences.getString(SharedPrefs.nickname)])
                     });
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

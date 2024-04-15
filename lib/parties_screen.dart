@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shot_call/party_participants.dart';
+import 'package:shot_call/shared_prefs.dart';
 
 class PartiesScreen extends StatelessWidget {
   const PartiesScreen({super.key});
@@ -26,19 +28,18 @@ class PartiesScreen extends StatelessWidget {
                             AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (snapshot.hasData && snapshot.data != null) {
                             return ListView.separated(
-                              shrinkWrap: true,
-                              separatorBuilder: (context, index) => const Divider(),
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(snapshot.data!.docs[index].id),
-                                  onTap: () {
-                                    //TODO: Implement me
-                                    _showPartyPasswordDialog(context);
-                                  }
-                                );
-                              }
-                            );
+                                shrinkWrap: true,
+                                separatorBuilder: (context, index) =>
+                                    const Divider(),
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final id = snapshot.data!.docs[index].id;
+                                  return ListTile(
+                                      title: Text(id),
+                                      onTap: () {
+                                        _showPartyPasswordDialog(context, id);
+                                      });
+                                });
                           } else {
                             return Container();
                           }
@@ -107,7 +108,11 @@ class PartiesScreen extends StatelessWidget {
                   await FirebaseFirestore.instance
                       .collection('parties')
                       .doc(partyNameController.text)
-                      .set({'password': passwordController.text});
+                      .set({
+                    'password': passwordController.text,
+                    'participants':
+                        sharedPreferences.getString(SharedPrefs.nickname)
+                  });
                   Navigator.of(context).pop();
                 }),
           ],
@@ -116,10 +121,10 @@ class PartiesScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _showPartyPasswordDialog(BuildContext context) async {
+  Future<void> _showPartyPasswordDialog(BuildContext context, String id) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         final TextEditingController controller = TextEditingController();
         return AlertDialog(
@@ -129,7 +134,7 @@ class PartiesScreen extends StatelessWidget {
               children: <Widget>[
                 TextField(
                   decoration: const InputDecoration(
-                    hintText: 'Ksywa',
+                    hintText: 'Podaj hasło',
                   ),
                   controller: controller,
                   focusNode: FocusNode(),
@@ -145,9 +150,28 @@ class PartiesScreen extends StatelessWidget {
           ),
           actions: [
             TextButton(
-                child: const Text('Jedziemy'),
+                child: const Text('OK'),
                 onPressed: () async {
-
+                  final party = await FirebaseFirestore.instance
+                      .collection('parties')
+                      .doc(id)
+                      .get();
+                  final data = party.data();
+                  if (data != null && data['password'] == controller.text) {
+                    FirebaseFirestore.instance
+                        .collection('parties')
+                        .doc(id)
+                        .update({
+                      'participants': FieldValue.arrayUnion(
+                          [sharedPreferences.getString(SharedPrefs.nickname)])
+                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PartyParticipantsScreen(partyId: id)),
+                    );
+                  }
                 }),
           ],
         );

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shot_call/shared_prefs.dart';
 
@@ -10,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  var nickname = sharedPreferences.get(SharedPrefs.nickname) ?? '';
+  var nickname = sharedPreferences.get(SharedPrefs.nickname) ?? '@';
 
   @override
   void initState() {
@@ -18,8 +19,8 @@ class _HomeScreen extends State<HomeScreen> {
     final shouldShowDialog =
         sharedPreferences.get(SharedPrefs.nickname) == null;
     if (shouldShowDialog) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showNicknameDialog(context);
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await _showNicknameDialog(context);
       });
     }
   }
@@ -30,60 +31,74 @@ class _HomeScreen extends State<HomeScreen> {
       appBar: AppBar(
         title: Center(child: Text("@$nickname")),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(20),
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('parties')
-              .doc(nickname.toString())
-              .snapshots(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                    'Wciśnij przycisk aby wezwać pomoc w razie zagrożenia bycia niedopitym.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24)),
-                const SizedBox(height: 60),
-                ElevatedButton(
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('🚨WÓD - CALL 🚨\n 🚨 WEZWIJ POMOC 🚨',
-                        textAlign: TextAlign.center),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('parties')
+                .doc('dummy')
+                .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                      'Nie masz z kim pić? Wciśnij przycisk, na pewno ktoś się pojawi.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 24)),
+                  const SizedBox(height: 60),
+                  ElevatedButton(
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('🚨WÓD - CALL 🚨\n 🚨 WEZWIJ POMOC 🚨',
+                          textAlign: TextAlign.center),
+                    ),
+                    onPressed: () async {
+                      await _shotsCallPressed();
+                    },
                   ),
-                  onPressed: () async {
-                    await _shotsCallPressed();
-                  },
-                ),
-                const SizedBox(height: 60),
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(nickname.toString())
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData &&
-                        snapshot.data?['alarm'] as bool == true) {
-                      return ElevatedButton(
-                        child: const Text(
-                            '😌 ODWOŁAJ - KRYZYS ZOSTAŁ ZAŻEGNANY 😌'),
-                        onPressed: () {
-                          FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(nickname.toString())
-                              .set({'alarm': false});
-                        },
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              ],
-            );
-          },
+                  const SizedBox(height: 60),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(nickname.toString())
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      final isSnapshotEmpty =
+                          snapshot.data?.data()?.isEmpty ?? true;
+                      if (snapshot.data != null && !isSnapshotEmpty) {
+                        return Visibility(
+                          visible: snapshot.data?['alarm'],
+                          child: ElevatedButton(
+                            child: const Text(
+                                '😌 ODWOŁAJ - KRYZYS ZOSTAŁ ZAŻEGNANY 😌'),
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(nickname.toString())
+                                  .update({'alarm': false});
+
+                              FirebaseFirestore.instance
+                                  .collection('parties')
+                                  .doc(sharedPreferences
+                                      .getString(SharedPrefs.partyName))
+                                  .update({
+                                'alarm': FieldValue.arrayRemove([nickname])
+                              });
+                            },
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -102,14 +117,14 @@ class _HomeScreen extends State<HomeScreen> {
     FirebaseFirestore.instance
         .collection('parties')
         .doc(party)
-        .set({'alarm': nickname});
+        .update({'alarm': FieldValue.arrayUnion([nickname])});
   }
 
   Future<void> _addAlarmToUser(String? nickname) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(nickname)
-        .set({'alarm': true});
+        .update({'alarm': true});
   }
 
   Future<List<String>> _getParties(String? nickname) async {

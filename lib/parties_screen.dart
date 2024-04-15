@@ -111,9 +111,10 @@ class PartiesScreen extends StatelessWidget {
                   await FirebaseFirestore.instance
                       .collection('users')
                       .doc(sharedPreferences.getString(SharedPrefs.nickname))
-                      .set({
+                      .update({
                     'parties': FieldValue.arrayUnion([partyNameController.text])
                   });
+                  sharedPreferences.setString(SharedPrefs.partyName, partyNameController.text);
                   Navigator.of(context).pop();
                 }),
           ],
@@ -122,7 +123,7 @@ class PartiesScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _showPartyPasswordDialog(BuildContext context, String id) async {
+  Future<void> _showPartyPasswordDialog(BuildContext context, String partyId) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -155,13 +156,13 @@ class PartiesScreen extends StatelessWidget {
                 onPressed: () async {
                   final party = await FirebaseFirestore.instance
                       .collection('parties')
-                      .doc(id)
+                      .doc(partyId)
                       .get();
                   final data = party.data();
                   if (data != null && data['password'] == controller.text) {
                     FirebaseFirestore.instance
                         .collection('parties')
-                        .doc(id)
+                        .doc(partyId)
                         .update({
                       'participants': FieldValue.arrayUnion(
                           [sharedPreferences.getString(SharedPrefs.nickname)])
@@ -169,15 +170,16 @@ class PartiesScreen extends StatelessWidget {
                     await FirebaseFirestore.instance
                         .collection('users')
                         .doc(sharedPreferences.getString(SharedPrefs.nickname))
-                        .set({
-                      'parties': FieldValue.arrayUnion([id])
+                        .update({
+                      'parties': FieldValue.arrayUnion([partyId])
                     });
+                    sharedPreferences.setString(SharedPrefs.partyName, partyId);
                     Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              PartyParticipantsScreen(partyId: id)),
+                              PartyParticipantsScreen(partyId: partyId)),
                     );
                   }
                 }),

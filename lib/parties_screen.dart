@@ -56,7 +56,6 @@ class PartiesScreen extends StatelessWidget {
   Future<void> _showCreatePartyDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         final TextEditingController partyNameController =
             TextEditingController();
@@ -75,7 +74,7 @@ class PartiesScreen extends StatelessWidget {
                   focusNode: FocusNode(),
                   autofocus: true,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                   cursorColor: Colors.red,
@@ -88,7 +87,7 @@ class PartiesScreen extends StatelessWidget {
                   focusNode: FocusNode(),
                   autofocus: true,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                   cursorColor: Colors.red,
@@ -128,7 +127,6 @@ class PartiesScreen extends StatelessWidget {
       BuildContext context, String partyId) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         final TextEditingController controller = TextEditingController();
         return AlertDialog(
@@ -144,7 +142,7 @@ class PartiesScreen extends StatelessWidget {
                   focusNode: FocusNode(),
                   autofocus: true,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                   cursorColor: Colors.red,

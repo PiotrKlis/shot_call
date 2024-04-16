@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shot_call/shared_prefs.dart';
 
@@ -37,66 +36,126 @@ class _HomeScreen extends State<HomeScreen> {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('parties')
-                .doc('dummy')
+                .doc(sharedPreferences.getString(SharedPrefs.partyName))
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                      'Nie masz z kim pić? Wciśnij przycisk, na pewno ktoś się pojawi.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24)),
-                  const SizedBox(height: 60),
-                  ElevatedButton(
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('🚨WÓD - CALL 🚨\n 🚨 WEZWIJ POMOC 🚨',
-                          textAlign: TextAlign.center),
+              final snapshotHasData =
+                  snapshot.data?.data()?.isNotEmpty ?? false;
+              if (snapshotHasData) {
+                final alarmNickname = (snapshot.data['alarm'] as List<dynamic>)
+                    .map((e) => e.toString())
+                    .toList();
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                        'Zaschło Ci w gardle i nie masz z kim się napić? Wciśnij przycisk aby wezwać posiłki.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 24)),
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          '🚨 WÓD - CALL 🚨\n🚨 WEZWIJ POMOC 🚨',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                      onPressed: () async {
+                        await _shotsCallPressed();
+                      },
                     ),
-                    onPressed: () async {
-                      await _shotsCallPressed();
-                    },
-                  ),
-                  const SizedBox(height: 60),
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(nickname.toString())
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      final isSnapshotEmpty =
-                          snapshot.data?.data()?.isEmpty ?? true;
-                      if (snapshot.data != null && !isSnapshotEmpty) {
-                        return Visibility(
-                          visible: snapshot.data?['alarm'],
-                          child: ElevatedButton(
-                            child: const Text(
-                                '😌 ODWOŁAJ - KRYZYS ZOSTAŁ ZAŻEGNANY 😌'),
-                            onPressed: () {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(nickname.toString())
-                                  .update({'alarm': false});
+                    const SizedBox(height: 32),
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(nickname.toString())
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        final snapshotHasData =
+                            snapshot.data?.data()?.isNotEmpty ?? false;
+                        if (snapshotHasData) {
+                          return Visibility(
+                            visible: snapshot.data?['alarm'],
 
-                              FirebaseFirestore.instance
-                                  .collection('parties')
-                                  .doc(sharedPreferences
-                                      .getString(SharedPrefs.partyName))
-                                  .update({
-                                'alarm': FieldValue.arrayRemove([nickname])
-                              });
-                            },
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
-                ],
-              );
+                            //         ElevatedButton(
+                            //                       style: ElevatedButton.styleFrom(
+                            //                         backgroundColor: Colors.red,
+                            //                       ),
+                            //                       child: const Padding(
+                            //                         padding: EdgeInsets.all(8.0),
+                            //                         child: Text(
+                            //                           '🚨 WÓD - CALL 🚨\n🚨 WEZWIJ POMOC 🚨',
+                            //                           textAlign: TextAlign.center,
+                            //                           style: TextStyle(color: Colors.white, fontSize: 24),
+                            //                         ),
+                            //                       ),
+                            //                       onPressed: () async {
+                            //                         await _shotsCallPressed();
+                            //                       },
+                            //                     ),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 24),
+                                    '😌 ODWOŁAJ ALARM \n KRYZYS ZOSTAŁ ZAŻEGNANY 😌'),
+                              ),
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(nickname.toString())
+                                    .update({'alarm': false});
+
+                                FirebaseFirestore.instance
+                                    .collection('parties')
+                                    .doc(sharedPreferences
+                                    .getString(SharedPrefs.partyName))
+                                    .update({
+                                  'alarm': FieldValue.arrayRemove([nickname])
+                                });
+                              },
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                    Visibility(
+                      visible: alarmNickname.isNotEmpty,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.red,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          '🚨 🚨 🚨 🚨 🚨 🚨 \n\n Użytkownik $alarmNickname potrzebuje pomocy! Rzuć wszystko i jak naszybciej idź się z nim napić zanim wyschnie! \n\n 🚨 🚨 🚨 🚨 🚨 🚨',
+                          style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return Container();
+              }
             },
           ),
         ),
@@ -155,7 +214,7 @@ class _HomeScreen extends State<HomeScreen> {
                   focusNode: FocusNode(),
                   autofocus: true,
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                   cursorColor: Colors.red,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shot_call/party_participants_screen.dart';
 import 'package:shot_call/shared_prefs.dart';
@@ -164,6 +165,7 @@ class PartiesScreen extends StatelessWidget {
                         .collection('parties')
                         .doc(partyId)
                         .update({
+                      'alarm' : [],
                       'participants': FieldValue.arrayUnion(
                           [sharedPreferences.getString(SharedPrefs.nickname)])
                     });
@@ -172,6 +174,7 @@ class PartiesScreen extends StatelessWidget {
                         .doc(sharedPreferences.getString(SharedPrefs.nickname))
                         .update({'parties': partyId});
                     sharedPreferences.setString(SharedPrefs.partyName, partyId);
+                    await FirebaseMessaging.instance.subscribeToTopic("kawalerski");
                     Navigator.pop(context);
                     Navigator.push(
                       context,

@@ -39,9 +39,7 @@ class _HomeScreen extends State<HomeScreen> {
                 .doc(sharedPreferences.getString(SharedPrefs.partyName))
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              final snapshotHasData =
-                  snapshot.data?.data()?.isNotEmpty ?? false;
-              if (snapshotHasData) {
+              if (snapshot.data.containsKey('alarm')) {
                 final alarmNickname = (snapshot.data['alarm'] as List<dynamic>)
                     .map((e) => e.toString())
                     .toList();
@@ -78,27 +76,12 @@ class _HomeScreen extends State<HomeScreen> {
                           .snapshots(),
                       builder: (context, snapshot) {
                         final snapshotHasData =
-                            snapshot.data?.data()?.isNotEmpty ?? false;
+                            snapshot.data
+                                ?.data()
+                                ?.isNotEmpty ?? false;
                         if (snapshotHasData) {
                           return Visibility(
                             visible: snapshot.data?['alarm'],
-
-                            //         ElevatedButton(
-                            //                       style: ElevatedButton.styleFrom(
-                            //                         backgroundColor: Colors.red,
-                            //                       ),
-                            //                       child: const Padding(
-                            //                         padding: EdgeInsets.all(8.0),
-                            //                         child: Text(
-                            //                           '🚨 WÓD - CALL 🚨\n🚨 WEZWIJ POMOC 🚨',
-                            //                           textAlign: TextAlign.center,
-                            //                           style: TextStyle(color: Colors.white, fontSize: 24),
-                            //                         ),
-                            //                       ),
-                            //                       onPressed: () async {
-                            //                         await _shotsCallPressed();
-                            //                       },
-                            //                     ),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
@@ -138,8 +121,8 @@ class _HomeScreen extends State<HomeScreen> {
                       child: Container(
                         decoration: const BoxDecoration(
                             color: Colors.red,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(20))),
                         padding: const EdgeInsets.all(20),
                         child: Text(
                           textAlign: TextAlign.center,
@@ -153,7 +136,7 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                   ],
                 );
-              } else {
+              } else  {
                 return Container();
               }
             },

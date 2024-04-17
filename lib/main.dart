@@ -1,15 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shot_call/bottom_bar.dart';
+import 'package:shot_call/local_notification_service.dart';
 import 'package:shot_call/shared_prefs.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _askForNotificationPermissions();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   runApp(const MyApp());
 }
+
+Future backgroundHandler(RemoteMessage msg) async {}
 
 Future<void> _askForNotificationPermissions() async {
   await Permission.notification.isDenied.then((isDenied) {
@@ -17,10 +22,41 @@ Future<void> _askForNotificationPermissions() async {
       Permission.notification.request();
     }
   });
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print("PKPK Message received: ${message.notification!.title}");
+  });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    LocalNotificationService.initialize();
+
+    // To initialise the sg
+    FirebaseMessaging.instance.getInitialMessage().then((message) {});
+
+    // To initialise when app is not terminated
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        LocalNotificationService.display(message);
+      }
+    });
+
+    // To handle when app is open in
+    // user divide and heshe is using it
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      LocalNotificationService.display(message);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

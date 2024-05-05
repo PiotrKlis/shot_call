@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shot_call/home_screen.dart';
 import 'package:shot_call/parties_screen.dart';
 
+GlobalKey globalKey = GlobalKey();
+
 class BasicBottomNavBar extends StatefulWidget {
   const BasicBottomNavBar({super.key});
 
@@ -30,6 +32,7 @@ class _BasicBottomNavBarState extends State<BasicBottomNavBar> {
         child: _pages.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        key: globalKey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.percent),

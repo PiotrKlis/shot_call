@@ -11,39 +11,52 @@ class PartiesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Imprezki'),
+          title: Center(child: const Text('Imprezki')),
         ),
         body: Container(
           margin: const EdgeInsets.all(
             24,
           ),
           child: SingleChildScrollView(
-            child: Container(
-                margin: const EdgeInsets.only(top: 24),
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('parties')
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return ListView.separated(
-                          shrinkWrap: true,
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final id = snapshot.data!.docs[index].id;
-                            return ListTile(
-                                title: Text(id),
-                                onTap: () {
-                                  _showPartyPasswordDialog(context, id);
-                                });
-                          });
-                    } else {
-                      return Container();
-                    }
-                  },
-                )),
+            child: Column(
+              children: [
+                const Text(
+                  'Stwórz nową imprezę lub dołącz do istniejącej',
+                  style: TextStyle(fontSize: 24),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 24),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('parties')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        return ListView.separated(
+                            shrinkWrap: true,
+                            separatorBuilder: (context, index) =>
+                                const Divider(),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final id = snapshot.data!.docs[index].id;
+                              return ListTile(
+                                  title: Text(
+                                    id,
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                  onTap: () {
+                                    _showPartyPasswordDialog(context, id);
+                                  });
+                            });
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -102,17 +115,19 @@ class PartiesScreen extends StatelessWidget {
                 onPressed: () async {
                   await FirebaseFirestore.instance
                       .collection('parties')
+                      .doc(sharedPreferences.getString(SharedPrefs.partyName))
+                      .set({
+                    'participants': FieldValue.arrayRemove(
+                        [sharedPreferences.getString(SharedPrefs.nickname)])
+                  });
+                  await FirebaseFirestore.instance
+                      .collection('parties')
                       .doc(partyNameController.text)
                       .set({
+                    'alarm': [],
                     'password': passwordController.text,
                     'participants':
                         sharedPreferences.getString(SharedPrefs.nickname)
-                  });
-                  await FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(sharedPreferences.getString(SharedPrefs.nickname))
-                      .update({
-                    'parties': FieldValue.arrayUnion([partyNameController.text])
                   });
                   sharedPreferences.setString(
                       SharedPrefs.partyName, partyNameController.text);
@@ -165,16 +180,13 @@ class PartiesScreen extends StatelessWidget {
                         .collection('parties')
                         .doc(partyId)
                         .update({
-                      'alarm' : [],
+                      'alarm': [],
                       'participants': FieldValue.arrayUnion(
                           [sharedPreferences.getString(SharedPrefs.nickname)])
                     });
-                    await FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(sharedPreferences.getString(SharedPrefs.nickname))
-                        .update({'parties': partyId});
                     sharedPreferences.setString(SharedPrefs.partyName, partyId);
-                    await FirebaseMessaging.instance.subscribeToTopic("kawalerski");
+                    await FirebaseMessaging.instance
+                        .subscribeToTopic("kawalerski");
                     Navigator.pop(context);
                     Navigator.push(
                       context,

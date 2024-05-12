@@ -22,9 +22,6 @@ Future<void> _askForNotificationPermissions() async {
       Permission.notification.request();
     }
   });
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print("PKPK Message received: ${message.notification!.title}");
-  });
 }
 
 class MyApp extends StatefulWidget {
@@ -38,24 +35,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     LocalNotificationService.initialize();
-
-    // To initialise the sg
-    FirebaseMessaging.instance.getInitialMessage().then((message) {});
-
-    // To initialise when app is not terminated
-    FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification != null) {
-        LocalNotificationService.display(message);
-      }
-    });
-
-    // To handle when app is open in
-    // user divide and heshe is using it
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      LocalNotificationService.display(message);
-    });
   }
 
   @override

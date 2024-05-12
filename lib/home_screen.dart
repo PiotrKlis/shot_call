@@ -42,6 +42,7 @@ class _HomeScreen extends State<HomeScreen> {
 
   Widget getViewContent() {
     if (sharedPreferences.getString(SharedPrefs.partyName) != null) {
+      //This should be StreamBuilder<DocumentSnapshot>
       return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('parties')

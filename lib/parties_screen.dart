@@ -11,7 +11,7 @@ class PartiesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: const Text('Imprezki')),
+          title: const Center(child: Text('Imprezki')),
         ),
         body: Container(
           margin: const EdgeInsets.all(
@@ -185,8 +185,7 @@ class PartiesScreen extends StatelessWidget {
                           [sharedPreferences.getString(SharedPrefs.nickname)])
                     });
                     sharedPreferences.setString(SharedPrefs.partyName, partyId);
-                    await FirebaseMessaging.instance
-                        .subscribeToTopic("kawalerski");
+                    await FirebaseMessaging.instance.subscribeToTopic(partyId);
                     Navigator.pop(context);
                     Navigator.push(
                       context,

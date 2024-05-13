@@ -23,6 +23,7 @@ class LocalNotificationService {
 
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print("PKPK notification received! getInitialMessage");
+      LocalNotificationService.display(message!);
     });
     // To initialise when app is not terminated
     FirebaseMessaging.onMessage.listen((message) {
@@ -32,30 +33,25 @@ class LocalNotificationService {
       }
     });
     // To handle when app is open in
-    // user divide and heshe is using it
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print("PKPK notification received! onMessageOpenedApp");
       LocalNotificationService.display(message);
+    });
+
+    FirebaseMessaging.onBackgroundMessage((message) {
+      print("PKPK notification received! onBackgroundMessage");
+      return LocalNotificationService.display(message);
     });
   }
 
   static Future<void> display(RemoteMessage message) async {
     // To display the notification in device
     try {
-      print(message.notification!.android!.sound);
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       NotificationDetails notificationDetails = NotificationDetails(
-        android: AndroidNotificationDetails(
-            message.notification!.android!.sound ?? "Channel Id",
-            message.notification!.android!.sound ?? "Main Channel",
-            groupKey: "gfg",
+        android: AndroidNotificationDetails("channelId", "channelName",
             color: Colors.green,
             importance: Importance.max,
-            sound: RawResourceAndroidNotificationSound(
-                message.notification!.android!.sound ?? "gfg"),
-
-            // different sound for
-            // different notification
             playSound: true,
             priority: Priority.high),
       );
@@ -68,4 +64,7 @@ class LocalNotificationService {
   }
 }
 
-Future backgroundHandler(RemoteMessage msg) async {}
+Future backgroundHandler(RemoteMessage message) async {
+  print("PKPK notification received! backgroundHandler");
+  LocalNotificationService.display(message);
+}

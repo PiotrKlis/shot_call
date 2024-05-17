@@ -82,7 +82,7 @@ class _HomeScreen extends State<HomeScreen> {
               ),
               const SizedBox(height: 32),
               Visibility(
-                visible: alarmNicknames.isNotEmpty,
+                visible: alarmNicknames.contains(sharedPreferences.get(SharedPrefs.nickname)),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,

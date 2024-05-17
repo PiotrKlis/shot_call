@@ -5,16 +5,22 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shot_call/bottom_bar.dart';
 import 'package:shot_call/local_notification_service.dart';
 import 'package:shot_call/shared_prefs.dart';
+import 'package:shot_call/utils/get_it.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _askForNotificationPermissions();
+  configureDependencies();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  _initializeNotificationsListeners();
+  await _askForNotificationPermissions();
   runApp(const MyApp());
 }
 
-Future backgroundHandler(RemoteMessage msg) async {}
+void _initializeNotificationsListeners() {
+  final notificationService = getIt.get<LocalNotificationService>();
+  FirebaseMessaging.onBackgroundMessage(notificationService.backgroundHandler);
+  getIt.get<LocalNotificationService>().initialize();
+}
 
 Future<void> _askForNotificationPermissions() async {
   await Permission.notification.isDenied.then((isDenied) {
@@ -24,22 +30,12 @@ Future<void> _askForNotificationPermissions() async {
   });
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    LocalNotificationService.initialize();
-  }
-
-  @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

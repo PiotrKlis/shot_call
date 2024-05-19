@@ -56,7 +56,7 @@ class LocalNotificationService {
   void _setFirebaseNotificationsListeners() {
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print('PKPK notification received! getInitialMessage');
-      display(message!);
+      // display(message!);
     });
     // To initialise when app is not terminated
     FirebaseMessaging.onMessage.listen((message) {

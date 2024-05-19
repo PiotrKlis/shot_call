@@ -1,6 +1,8 @@
 include: package:very_good_analysis/analysis_options.5.1.0.yaml
 analyzer:
   exclude: [build/**, bricks/**, "**.freezed.dart", "**.g.dart", "**.config.dart"]
+  plugins:
+    - custom_lint
 linter:
   rules:
     public_member_api_docs: false

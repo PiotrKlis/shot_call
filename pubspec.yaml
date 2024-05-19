@@ -18,6 +18,9 @@ dependencies:
   flutter_local_notifications: ^17.1.2
   get_it: ^7.7.0
   injectable: ^2.4.0
+  flex_color_scheme: ^7.3.1
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
 
 dev_dependencies:
   injectable_generator: ^2.6.1
@@ -26,6 +29,9 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   build_runner: ^2.4.10
   very_good_analysis: ^5.1.0
+  riverpod_generator: ^2.4.0
+  custom_lint: ^0.6.4
+  riverpod_lint: ^2.3.10
 
 flutter:
   uses-material-design: true

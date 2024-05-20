@@ -115,10 +115,10 @@ class PartiesScreen extends StatelessWidget {
                 onPressed: () async {
                   await FirebaseFirestore.instance
                       .collection('parties')
-                      .doc(sharedPreferences.getString(SharedPrefs.partyName))
+                      .doc(sharedPreferences.getString(''))
                       .set({
                     'participants': FieldValue.arrayRemove(
-                        [sharedPreferences.getString(SharedPrefs.nickname)])
+                        [sharedPreferences.getString(SharedPrefs.keyNickname)])
                   });
                   await FirebaseFirestore.instance
                       .collection('parties')
@@ -127,10 +127,10 @@ class PartiesScreen extends StatelessWidget {
                     'alarm': [],
                     'password': passwordController.text,
                     'participants':
-                        sharedPreferences.getString(SharedPrefs.nickname)
+                        sharedPreferences.getString(SharedPrefs.keyNickname)
                   });
                   sharedPreferences.setString(
-                      SharedPrefs.partyName, partyNameController.text);
+                      '', partyNameController.text);
                   Navigator.of(context).pop();
                 }),
           ],
@@ -182,9 +182,9 @@ class PartiesScreen extends StatelessWidget {
                         .update({
                       'alarm': [],
                       'participants': FieldValue.arrayUnion(
-                          [sharedPreferences.getString(SharedPrefs.nickname)])
+                          [sharedPreferences.getString(SharedPrefs.keyNickname)])
                     });
-                    sharedPreferences.setString(SharedPrefs.partyName, partyId);
+                    sharedPreferences.setString('', partyId);
                     await FirebaseMessaging.instance.subscribeToTopic(partyId);
                     Navigator.pop(context);
                     Navigator.push(

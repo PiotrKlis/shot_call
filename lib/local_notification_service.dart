@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable()
-class LocalNotificationService {
+@injectable
+class NotificationsService {
   final _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
   void initialize() {
+    _initializePlugin();
+    _setFirebaseNotificationsListeners();
+  }
+
+  void _initializePlugin() {
     const initializationSettingsAndroid = InitializationSettings(
       android: AndroidInitializationSettings('@drawable/ic_launcher'),
       iOS: DarwinInitializationSettings(),
@@ -15,14 +20,16 @@ class LocalNotificationService {
 
     _notificationsPlugin.initialize(
       initializationSettingsAndroid,
-      onDidReceiveNotificationResponse: (details) {
-        if (details.input != null) {
-          print('PKPK notification received! onDidReceiveNotificationResponse');
-        }
-      },
+      onDidReceiveBackgroundNotificationResponse:
+          _onDidReceiveBackgroundNotificationResponse,
     );
+  }
 
-    _setFirebaseNotificationsListeners();
+  void _onDidReceiveBackgroundNotificationResponse(
+      NotificationResponse details) {
+    if (details.input != null) {
+      print('PKPK notification received! onDidReceiveNotificationResponse');
+    }
   }
 
   Future<void> backgroundHandler(RemoteMessage message) {
@@ -54,6 +61,8 @@ class LocalNotificationService {
   }
 
   void _setFirebaseNotificationsListeners() {
+    FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print('PKPK notification received! getInitialMessage');
       // display(message!);

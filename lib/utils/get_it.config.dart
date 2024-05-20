@@ -11,6 +11,7 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:shot_call/local_notification_service.dart' as _i3;
+import 'package:shot_call/shared_prefs.dart' as _i4;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -23,8 +24,8 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i3.LocalNotificationService>(
-        () => _i3.LocalNotificationService());
+    gh.factory<_i3.NotificationsService>(() => _i3.NotificationsService());
+    gh.factory<_i4.SharedPrefs>(() => _i4.SharedPrefs());
     return this;
   }
 }

@@ -5,6 +5,6 @@ import 'package:shot_call/utils/get_it.config.dart';
 final getIt = GetIt.instance;
 
 @InjectableInit()
-void configureDependencies() {
+void initializeDependencyInjection() {
   getIt.init();
 }

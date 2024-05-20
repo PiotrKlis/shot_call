@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shot_call/bottom_bar.dart';
 import 'package:shot_call/shared_prefs.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -183,9 +182,7 @@ class _HomeScreen extends State<HomeScreen> {
                   sharedPreferences.setString(
                       SharedPrefs.keyNickname, controller.text);
                   Navigator.of(context).pop();
-                  final BottomNavigationBar navigationBar =
-                      globalKey.currentWidget as BottomNavigationBar;
-                  navigationBar.onTap!(1);
+                  //TODO: Add navigation to parties screen if no party is set yet
                 }),
           ],
         );

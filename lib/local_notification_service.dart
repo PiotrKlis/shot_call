@@ -2,6 +2,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shot_call/utils/get_it.dart';
+
+// The backgroundHandler needs to be either a static function
+// or a top level function to be accessible as a Flutter entry point.
+Future<void> _backgroundHandler(RemoteMessage message) {
+  print('PKPK notification received! backgroundHandler');
+  return getIt.get<NotificationsService>().display(message);
+}
 
 @injectable
 class NotificationsService {
@@ -10,31 +18,6 @@ class NotificationsService {
   void initialize() {
     _initializePlugin();
     _setFirebaseNotificationsListeners();
-  }
-
-  void _initializePlugin() {
-    const initializationSettingsAndroid = InitializationSettings(
-      android: AndroidInitializationSettings('@drawable/ic_launcher'),
-      iOS: DarwinInitializationSettings(),
-    );
-
-    _notificationsPlugin.initialize(
-      initializationSettingsAndroid,
-      onDidReceiveBackgroundNotificationResponse:
-          _onDidReceiveBackgroundNotificationResponse,
-    );
-  }
-
-  void _onDidReceiveBackgroundNotificationResponse(
-      NotificationResponse details) {
-    if (details.input != null) {
-      print('PKPK notification received! onDidReceiveNotificationResponse');
-    }
-  }
-
-  Future<void> backgroundHandler(RemoteMessage message) {
-    print('PKPK notification received! backgroundHandler');
-    return display(message);
   }
 
   Future<void> display(RemoteMessage message) async {
@@ -60,8 +43,28 @@ class NotificationsService {
     }
   }
 
+  void _initializePlugin() {
+    const initializationSettingsAndroid = InitializationSettings(
+      android: AndroidInitializationSettings('@drawable/ic_launcher'),
+      iOS: DarwinInitializationSettings(),
+    );
+
+    _notificationsPlugin.initialize(
+      initializationSettingsAndroid,
+      onDidReceiveBackgroundNotificationResponse:
+          _onDidReceiveBackgroundNotificationResponse,
+    );
+  }
+
+  void _onDidReceiveBackgroundNotificationResponse(
+      NotificationResponse details) {
+    if (details.input != null) {
+      print('PKPK notification received! onDidReceiveNotificationResponse');
+    }
+  }
+
   void _setFirebaseNotificationsListeners() {
-    FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
 
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print('PKPK notification received! getInitialMessage');

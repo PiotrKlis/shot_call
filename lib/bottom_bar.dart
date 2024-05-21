@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shot_call/home_screen.dart';
+import 'package:shot_call/screens/home/home_screen.dart';
 import 'package:shot_call/parties_screen.dart';
 
 GlobalKey globalKey = GlobalKey();

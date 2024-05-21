@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
 import 'package:shot_call/shared_prefs.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,16 +11,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  var nickname = sharedPreferences.get(SharedPrefs.keyNickname) ?? '@';
+  String nickname = sharedPreferences.getString(SharedPrefs.keyNickname) ?? '@';
 
   @override
   void initState() {
     super.initState();
+    _handleAskForNicknameDialog();
+  }
+
+  void _handleAskForNicknameDialog() {
     final shouldShowNicknameDialog =
         sharedPreferences.get(SharedPrefs.keyNickname) == null;
     if (shouldShowNicknameDialog) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await _showNicknameDialog(context);
+        await _showAskForNicknameDialog(context);
       });
     }
   }
@@ -28,7 +33,7 @@ class _HomeScreen extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("@$nickname")),
+        title: Center(child: Text("nickname")),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -144,48 +149,16 @@ class _HomeScreen extends State<HomeScreen> {
 
   void _addAlarmToParty(String? party, String? nickname) {
     FirebaseFirestore.instance.collection('parties').doc(party).update({
-      'alarm': FieldValue.arrayUnion([nickname])
+      'alarm': FieldValue.arrayUnion([nickname]),
     });
   }
 
-  Future<void> _showNicknameDialog(BuildContext context) async {
-    return showDialog<void>(
+  Future<void> _showAskForNicknameDialog(BuildContext context) async {
+    return showDialog(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        final TextEditingController controller = TextEditingController();
-        return AlertDialog(
-          title: const Center(child: Text('Jaka ksywa wariacie')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  decoration: const InputDecoration(
-                    hintText: 'Ksywa',
-                  ),
-                  controller: controller,
-                  focusNode: FocusNode(),
-                  autofocus: true,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                  cursorColor: Colors.red,
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                child: const Text('Jedziemy'),
-                onPressed: () async {
-                  sharedPreferences.setString(
-                      SharedPrefs.keyNickname, controller.text);
-                  Navigator.of(context).pop();
-                  //TODO: Add navigation to parties screen if no party is set yet
-                }),
-          ],
-        );
+        return NicknameAlertDialog();
       },
     );
   }

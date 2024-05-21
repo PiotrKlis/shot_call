@@ -4,11 +4,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shot_call/utils/get_it.dart';
 
-// The backgroundHandler needs to be either a static function
-// or a top level function to be accessible as a Flutter entry point.
-Future<void> _backgroundHandler(RemoteMessage message) {
-  print('PKPK notification received! backgroundHandler');
-  return getIt.get<NotificationsService>().display(message);
+void _onDidReceiveBackgroundNotificationResponse(NotificationResponse details) {
+  if (details.input != null) {
+    print('PKPK notification received! onDidReceiveNotificationResponse');
+  }
 }
 
 @injectable
@@ -56,15 +55,13 @@ class NotificationsService {
     );
   }
 
-  void _onDidReceiveBackgroundNotificationResponse(
-      NotificationResponse details) {
-    if (details.input != null) {
-      print('PKPK notification received! onDidReceiveNotificationResponse');
-    }
-  }
-
   void _setFirebaseNotificationsListeners() {
-    FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(
+      (message) {
+        print('PKPK notification received! onBackgroundMessage');
+        return display(message);
+      },
+    );
 
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       print('PKPK notification received! getInitialMessage');

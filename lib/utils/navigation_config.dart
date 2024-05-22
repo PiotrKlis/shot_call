@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shot_call/bottom_nav_bar.dart';
 import 'package:shot_call/screens/home/home_screen.dart';
-import 'package:shot_call/parties_screen.dart';
+import 'package:shot_call/screens/parties/parties_screen.dart';
 import 'package:shot_call/party_participants_screen.dart';
 import 'package:shot_call/utils/navigation_constants.dart';
 import 'package:shot_call/utils/screen_navigation_key.dart';

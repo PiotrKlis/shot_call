@@ -5,13 +5,12 @@ import 'package:shot_call/utils/screen_navigation_key.dart';
 import 'package:shot_call/utils/text_field_validator.dart';
 
 class NicknameAlertDialog extends StatelessWidget {
-  NicknameAlertDialog({super.key});
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final controller = TextEditingController();
+  const NicknameAlertDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    final controller = TextEditingController();
     return AlertDialog(
       title: const Center(child: Text('Jaka ksywa wariacie')),
       content: Form(

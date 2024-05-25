@@ -53,6 +53,6 @@ class PartyCreationNotifier extends StateNotifier<AsyncValue<void>> {
 }
 
 final partyCreationProvider =
-    StateNotifierProvider<PartyCreationNotifier, AsyncValue<void>>((ref) {
+StateNotifierProvider.autoDispose<PartyCreationNotifier, AsyncValue<void>>((ref) {
   return PartyCreationNotifier();
 });

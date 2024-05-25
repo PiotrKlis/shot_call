@@ -15,18 +15,18 @@ class CreatePartyDialog extends ConsumerWidget {
     final partyCreationNotifier = ref.read(partyCreationProvider.notifier);
 
     ref.watch(partyCreationProvider).when(
-          data: (_) {
-            context.pop();
-          },
-          loading: () {
-
-          },
-          error: (error, _) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: $error')),
-            );
-          },
+      data: (_) {
+        context.pop();
+      },
+      loading: () {
+        //no-op
+      },
+      error: (error, _) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $error')),
         );
+      },
+    );
     return AlertDialog(
       title: const Center(child: Text('Jaka impreza wariacie')),
       content: Form(
@@ -34,30 +34,8 @@ class CreatePartyDialog extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Nazwa imprezy',
-              ),
-              controller: partyNameController,
-              focusNode: FocusNode(),
-              autofocus: true,
-              validator: (value) => TextFieldValidator.validateIsEmpty(
-                value,
-                'Nazwa imprezy nie może być pusta :|',
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Hasło',
-              ),
-              controller: passwordController,
-              focusNode: FocusNode(),
-              autofocus: true,
-              validator: (value) => TextFieldValidator.validateIsEmpty(
-                value,
-                'Hasło nie może być puste :|',
-              ),
-            ),
+            _PartyNameTextField(partyNameController: partyNameController),
+            _PartyPasswordTextField(passwordController: passwordController),
           ],
         ),
       ),
@@ -74,6 +52,54 @@ class CreatePartyDialog extends ConsumerWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+class _PartyPasswordTextField extends StatelessWidget {
+  const _PartyPasswordTextField({
+    required this.passwordController,
+  });
+
+  final TextEditingController passwordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: const InputDecoration(
+        hintText: 'Hasło',
+      ),
+      controller: passwordController,
+      focusNode: FocusNode(),
+      autofocus: true,
+      validator: (value) => TextFieldValidator.validateIsEmpty(
+        value,
+        'Hasło nie może być puste :|',
+      ),
+    );
+  }
+}
+
+class _PartyNameTextField extends StatelessWidget {
+  const _PartyNameTextField({
+    required this.partyNameController,
+  });
+
+  final TextEditingController partyNameController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: const InputDecoration(
+        hintText: 'Nazwa imprezy',
+      ),
+      controller: partyNameController,
+      focusNode: FocusNode(),
+      autofocus: true,
+      validator: (value) => TextFieldValidator.validateIsEmpty(
+        value,
+        'Nazwa imprezy nie może być pusta :|',
+      ),
     );
   }
 }

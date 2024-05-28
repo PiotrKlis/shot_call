@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shot_call/screens/parties/parties_creation_notifier.dart';
+import 'package:shot_call/screens/parties/create_party_dialog/create_party_notifier.dart';
 import 'package:shot_call/utils/text_field_validator.dart';
 
 class CreatePartyDialog extends ConsumerWidget {
@@ -12,19 +12,14 @@ class CreatePartyDialog extends ConsumerWidget {
     final formKey = GlobalKey<FormState>();
     final partyNameController = TextEditingController();
     final passwordController = TextEditingController();
-    final partyCreationNotifier = ref.read(partyCreationProvider.notifier);
-
-    ref.watch(partyCreationProvider).when(
-      data: (_) {
-        context.pop();
-      },
-      loading: () {
-        //no-op
-      },
-      error: (error, _) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $error')),
-        );
+    final createPartyNotifier =
+        ref.read(createPartyStateNotifierProvider.notifier);
+    ref.listen(
+      createPartyStateNotifierProvider,
+      (previous, next) {
+        if (next == const AsyncData<void>(null)) {
+          context.pop();
+        }
       },
     );
     return AlertDialog(
@@ -44,7 +39,7 @@ class CreatePartyDialog extends ConsumerWidget {
           child: const Text('Stwórz imprezę'),
           onPressed: () async {
             if (formKey.currentState!.validate()) {
-              await partyCreationNotifier.createParty(
+              await createPartyNotifier.createParty(
                 partyNameController.text,
                 passwordController.text,
               );

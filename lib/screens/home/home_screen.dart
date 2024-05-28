@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
 import 'package:shot_call/shared_prefs.dart';
+import 'package:shot_call/utils/connection_status.dart';
+import 'package:shot_call/utils/context_extensions.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreen();
+  ConsumerState<HomeScreen> createState() => _HomeScreen();
 }
 
-class _HomeScreen extends State<HomeScreen> {
+class _HomeScreen extends ConsumerState<HomeScreen> {
   String nickname = sharedPreferences.getString(SharedPrefs.keyNickname) ?? '@';
 
   @override

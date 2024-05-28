@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -51,11 +50,11 @@ Future<void> _askForNotificationPermissions() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       routerConfig: goRouter,
       title: 'Call the Shots',
@@ -63,7 +62,6 @@ class MyApp extends StatelessWidget {
         scheme: FlexScheme.bahamaBlue,
         useMaterial3: true,
         typography: Typography.material2021(),
-        appBarElevation: 2,
       ),
     );
   }

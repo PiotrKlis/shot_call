@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shot_call/screens/parties/create_party_dialog.dart';
+import 'package:shot_call/screens/parties/create_party_dialog/create_party_dialog.dart';
 import 'package:shot_call/screens/parties/parties_provider.dart';
-import 'package:shot_call/screens/parties/party_password_dialog.dart';
+import 'package:shot_call/screens/parties/party_password_dialog/party_password_dialog.dart';
 
 class PartiesScreen extends ConsumerWidget {
   const PartiesScreen({super.key});
@@ -63,7 +63,7 @@ class _PartiesListConsumer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final partiesAsyncValue = ref.watch(partiesProvider);
+    final partiesAsyncValue = ref.watch(partiesStreamProvider);
     return Container(
       margin: const EdgeInsets.only(top: 24),
       child: partiesAsyncValue.when(

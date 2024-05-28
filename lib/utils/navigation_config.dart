@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shot_call/bottom_nav_bar.dart';
+import 'package:shot_call/app_frame_with_nav_bar.dart';
 import 'package:shot_call/screens/home/home_screen.dart';
 import 'package:shot_call/screens/parties/parties_screen.dart';
 import 'package:shot_call/party_participants_screen.dart';
@@ -18,7 +18,7 @@ final goRouter = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return BottomNavBar(navigationShell: navigationShell);
+        return AppFrameWithNavBar(navigationShell: navigationShell);
       },
       branches: [
         StatefulShellBranch(

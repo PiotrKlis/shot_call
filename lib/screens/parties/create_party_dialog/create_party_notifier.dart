@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shot_call/shared_prefs.dart';
 
-class PartyCreationNotifier extends StateNotifier<AsyncValue<void>> {
-  PartyCreationNotifier() : super(const AsyncValue.loading());
+part 'create_party_notifier.g.dart';
+
+@riverpod
+class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
+  @override
+  AsyncValue<void> build() {
+    return const AsyncValue.loading();
+  }
 
   Future<void> createParty(String partyName, String password) async {
     try {
@@ -51,8 +57,3 @@ class PartyCreationNotifier extends StateNotifier<AsyncValue<void>> {
     return otherParty;
   }
 }
-
-final partyCreationProvider =
-StateNotifierProvider.autoDispose<PartyCreationNotifier, AsyncValue<void>>((ref) {
-  return PartyCreationNotifier();
-});

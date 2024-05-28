@@ -2,44 +2,43 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shot_call/shared_prefs.dart';
+import 'package:shot_call/utils/should_show_error.dart';
 
 part 'party_password_notifier.g.dart';
 
 @riverpod
-class ShouldShowError extends _$ShouldShowError {
-  @override
-  bool build() {
-    return false;
-  }
-
-  void update() => !state;
-}
-
-@riverpod
-class PartyPasswordStateNotifier extends _$PartyPasswordStateNotifier {
+class PartyPasswordNotifier extends _$PartyPasswordNotifier {
   @override
   AsyncValue<void> build() {
-    return const AsyncLoading();
+    return const AsyncValue.loading();
   }
 
-  Future<void> joinParty({
+  Future<AsyncValue<void>> joinParty({
     required String partyId,
     required String password,
-    required ShouldShowError shouldShowError,
   }) async {
-    ref.read(shouldShowErrorProvider.notifier).update();
     try {
       final party = await _getPartyData(partyId);
       final isPasswordCorrect = party['password'] == password;
       if (isPasswordCorrect) {
-        await _addUserToParty(partyId);
-        await FirebaseMessaging.instance.subscribeToTopic(partyId);
-        state = const AsyncValue.data(null);
+        return await _handleCorrectPassword(partyId);
+      } else {
+        return _handleIncorrectPassword();
       }
     } catch (error, stackTrace) {
-      state = AsyncValue.error(error, stackTrace);
-      shouldShowError.update();
+      return AsyncValue.error(error, stackTrace);
     }
+  }
+
+  AsyncValue<void> _handleIncorrectPassword() {
+    ref.read(shouldShowErrorProvider.notifier).show();
+    return AsyncValue.error('Invalid password', StackTrace.current);
+  }
+
+  Future<AsyncValue<void>> _handleCorrectPassword(String partyId) async {
+    await _addUserToParty(partyId);
+    await FirebaseMessaging.instance.subscribeToTopic(partyId);
+    return const AsyncValue.data(null);
   }
 
   Future<void> _addUserToParty(String partyId) async {

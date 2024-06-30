@@ -13,7 +13,7 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
     return const AsyncValue.loading();
   }
 
-  Future<AsyncValue<void>> joinParty({
+  Future<void> joinParty({
     required String partyId,
     required String password,
   }) async {
@@ -21,28 +21,28 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
       final party = await _getPartyData(partyId);
       final isPasswordCorrect = party['password'] == password;
       if (isPasswordCorrect) {
-        return await _handleCorrectPassword(partyId);
+        await _handleCorrectPassword(partyId);
       } else {
-        return _handleIncorrectPassword();
+        _handleIncorrectPassword();
       }
     } catch (error, stackTrace) {
-      return AsyncValue.error(error, stackTrace);
+      state = AsyncValue.error(error, stackTrace);
     }
   }
 
-  AsyncValue<void> _handleIncorrectPassword() {
+  void _handleIncorrectPassword() {
     ref.read(shouldShowErrorProvider.notifier).show();
-    return AsyncValue.error('Invalid password', StackTrace.current);
+    state = AsyncValue.error('Invalid password', StackTrace.current);
   }
 
-  Future<AsyncValue<void>> _handleCorrectPassword(String partyId) async {
+  Future<void> _handleCorrectPassword(String partyId) async {
     await _addUserToParty(partyId);
     await FirebaseMessaging.instance.subscribeToTopic(partyId);
-    return const AsyncValue.data(null);
+    state = const AsyncValue.data(null);
   }
 
   Future<void> _addUserToParty(String partyId) async {
-    await FirebaseFirestore.instance.collection('parties').doc(partyId).set({
+    await FirebaseFirestore.instance.collection('parties').doc(partyId).update({
       'participants': sharedPreferences.getString(SharedPrefs.keyNickname),
     });
   }

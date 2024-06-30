@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shot_call/screens/parties/party_password_dialog/party_password_notifier.dart';
+import 'package:shot_call/utils/logger.dart';
+import 'package:shot_call/utils/navigation_constants.dart';
+import 'package:shot_call/utils/screen_navigation_key.dart';
 import 'package:shot_call/utils/should_show_error.dart';
 
 class PartyPasswordDialog extends ConsumerWidget {
@@ -11,8 +15,14 @@ class PartyPasswordDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(partyPasswordNotifierProvider, (previous, next) {
-      if (next is AsyncData) {
-        Navigator.of(context).pop();
+      if (next == const AsyncData<void>(null)) {
+        context.pushNamed(
+          ScreenNavigationKey.partyMembers,
+          pathParameters: {NavigationConstants.partyId: partyId},
+        );
+      }
+      if (next is AsyncError) {
+        Logger.error(next.error, next.stackTrace);
       }
     });
     final controller = TextEditingController();
@@ -30,10 +40,13 @@ class PartyPasswordDialog extends ConsumerWidget {
               focusNode: FocusNode(),
               autofocus: true,
             ),
+            const SizedBox(height: 16),
             Visibility(
-              //TODO: I not rebuild myself :(
               visible: ref.watch(shouldShowErrorProvider),
-              child: const Text('Invalid password'),
+              child: Text(
+                'Błędne hasło!',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
             ),
           ],
         ),

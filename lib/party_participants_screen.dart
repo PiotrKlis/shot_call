@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class PartyParticipantsScreen extends StatelessWidget {
-  const PartyParticipantsScreen({super.key, required String partyId})
+  const PartyParticipantsScreen({required String partyId, super.key})
       : _partyId = partyId;
 
   final String _partyId;

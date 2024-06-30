@@ -9,5 +9,7 @@ class ShouldShowError extends _$ShouldShowError {
     return false;
   }
 
-  void show() => !state;
+  void show() {
+    state = true;
+  }
 }

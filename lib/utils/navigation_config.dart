@@ -26,7 +26,7 @@ final goRouter = GoRouter(
           routes: [
             GoRoute(
               name: ScreenNavigationKey.home,
-              path: ScreenNavigationKey.home,
+              path: '/${ScreenNavigationKey.home}',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return const NoTransitionPage(
                   child: HomeScreen(),
@@ -40,7 +40,7 @@ final goRouter = GoRouter(
           routes: [
             GoRoute(
               name: ScreenNavigationKey.parties,
-              path: ScreenNavigationKey.parties,
+              path: '/${ScreenNavigationKey.parties}',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return const NoTransitionPage(
                   child: PartiesScreen(),
@@ -49,12 +49,14 @@ final goRouter = GoRouter(
               routes: [
                 GoRoute(
                   name: ScreenNavigationKey.partyMembers,
-                  path: ScreenNavigationKey.partyMembers,
+                  path:
+                      '${ScreenNavigationKey.parties}/${ScreenNavigationKey.partyMembers}/:${NavigationConstants.partyId}',
+                  // Correctly include path parameter
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     return NoTransitionPage(
                       child: PartyParticipantsScreen(
-                        partyId: state
-                            .uri.queryParameters[NavigationConstants.partyId]!,
+                        partyId:
+                            state.pathParameters[NavigationConstants.partyId]!,
                       ),
                     );
                   },

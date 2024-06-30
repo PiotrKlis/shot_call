@@ -11,13 +11,6 @@ class AppFrameWithNavBar extends ConsumerWidget {
   }) : super(key: key ?? const ValueKey('ScaffoldWithNestedNavigation'));
   final StatefulNavigationShell navigationShell;
 
-  void _goBranch(int index) {
-    navigationShell.goBranch(
-      index,
-      initialLocation: index == navigationShell.currentIndex,
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     _listenForConnectivityChanges(ref, context);
@@ -37,6 +30,13 @@ class AppFrameWithNavBar extends ConsumerWidget {
         ],
         onDestinationSelected: _goBranch,
       ),
+    );
+  }
+
+  void _goBranch(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
     );
   }
 

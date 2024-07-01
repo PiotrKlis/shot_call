@@ -14,17 +14,7 @@ class PartyPasswordDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(partyPasswordNotifierProvider, (previous, next) {
-      if (next == const AsyncData<void>(null)) {
-        context.pushNamed(
-          ScreenNavigationKey.partyMembers,
-          pathParameters: {NavigationConstants.partyId: partyId},
-        );
-      }
-      if (next is AsyncError) {
-        Logger.error(next.error, next.stackTrace);
-      }
-    });
+    _confirmationNavigationListener(ref, context);
     final controller = TextEditingController();
     return AlertDialog(
       title: const Center(child: Text('Jakie hasło wariacie')),
@@ -63,5 +53,21 @@ class PartyPasswordDialog extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  void _confirmationNavigationListener(WidgetRef ref, BuildContext context) {
+    ref.listen(partyPasswordNotifierProvider, (previous, next) {
+      if (next == const AsyncData<void>(null)) {
+        context
+          ..pop()
+          ..pushNamed(
+            ScreenNavigationKey.partyMembers,
+            pathParameters: {NavigationConstants.partyId: partyId},
+          );
+      }
+      if (next is AsyncError) {
+        Logger.error(next.error, next.stackTrace);
+      }
+    });
   }
 }

@@ -63,16 +63,15 @@ class _PartiesListConsumer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final partiesAsyncValue = ref.watch(partiesStreamProvider);
     return Container(
       margin: const EdgeInsets.only(top: 24),
-      child: partiesAsyncValue.when(
-        data: (snapshot) {
-          return _PartiesListContent(snapshot: snapshot);
-        },
-        loading: () => const CircularProgressIndicator(),
-        error: (error, stack) => Text('Error: $error'),
-      ),
+      child: ref.watch(partiesStreamProvider).when(
+            data: (snapshot) {
+              return _PartiesListContent(snapshot: snapshot);
+            },
+            loading: () => const CircularProgressIndicator(),
+            error: (error, stack) => Text('Error: $error'),
+          ),
     );
   }
 }

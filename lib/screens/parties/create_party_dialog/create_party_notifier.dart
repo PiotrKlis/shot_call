@@ -25,7 +25,9 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
     await FirebaseFirestore.instance.collection('parties').doc(partyName).set({
       'alarm': <String>[],
       'password': password,
-      'participants': sharedPreferences.getString(SharedPrefs.keyNickname),
+      'participants': FieldValue.arrayUnion(
+        [sharedPreferences.getString(SharedPrefs.keyNickname)],
+      ),
     });
   }
 

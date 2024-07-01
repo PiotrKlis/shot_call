@@ -43,7 +43,9 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
 
   Future<void> _addUserToParty(String partyId) async {
     await FirebaseFirestore.instance.collection('parties').doc(partyId).update({
-      'participants': sharedPreferences.getString(SharedPrefs.keyNickname),
+      'participants': FieldValue.arrayUnion(
+        [sharedPreferences.getString(SharedPrefs.keyNickname)],
+      ),
     });
   }
 

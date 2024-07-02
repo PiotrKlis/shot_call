@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shot_call/screens/home/call_button_provider.dart';
+import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/screens/home/party_name_provider.dart';
 import 'package:shot_call/shared_prefs.dart';
 import 'package:shot_call/utils/should_show_error.dart';
@@ -40,13 +42,14 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
     await _addUserToParty(partyName);
     // await FirebaseMessaging.instance.subscribeToTopic(partyId);
     ref.read(partyNameProvider.notifier).update(partyName);
+    // ref.read(callTheShotsButtonProvider.notifier).updateParty();
     state = const AsyncValue.data(null);
   }
 
   Future<void> _addUserToParty(String partyId) async {
     await FirebaseFirestore.instance.collection('parties').doc(partyId).update({
       'participants': FieldValue.arrayUnion(
-        [sharedPreferences.getString(SharedPrefs.keyNickname)],
+        [ref.read(nicknameProvider)],
       ),
     });
   }

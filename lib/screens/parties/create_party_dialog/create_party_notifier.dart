@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shot_call/screens/home/call_button_provider.dart';
+import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/screens/home/party_name_provider.dart';
 import 'package:shot_call/shared_prefs.dart';
 
@@ -27,7 +29,7 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
       'alarm': '',
       'password': password,
       'participants': FieldValue.arrayUnion(
-        [sharedPreferences.getString(SharedPrefs.keyNickname)],
+        [ref.read(nicknameProvider)],
       ),
     });
     ref.read(partyNameProvider.notifier).update(partyName);
@@ -35,14 +37,14 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
 
   Future<void> _removeNicknameFromOtherParties() async {
     await () async {
-      final partyName = sharedPreferences.getString(SharedPrefs.keyPartyName);
-      if (partyName != null) {
+      final partyName = ref.read(partyNameProvider);
+      if (partyName.isNotEmpty) {
         await FirebaseFirestore.instance
             .collection('parties')
             .doc(partyName)
             .update({
           'participants': FieldValue.arrayRemove(
-            [sharedPreferences.getString(SharedPrefs.keyNickname)],
+            [ref.read(nicknameProvider)],
           ),
         });
       }

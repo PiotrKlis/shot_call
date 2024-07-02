@@ -6,7 +6,7 @@ part of 'party_name_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$partyNameHash() => r'caf7f5023cc992b8cbc79355bc7fe9bb2e7dcbf4';
+String _$partyNameHash() => r'69c9c972501c700a332485b606ba4276f7415519';
 
 /// See also [PartyName].
 @ProviderFor(PartyName)

@@ -7,8 +7,7 @@ part 'party_name_provider.g.dart';
 class PartyName extends _$PartyName {
   @override
   String build() {
-    return sharedPreferences.getString(SharedPrefs.keyPartyName) ??
-        'Dołącz do imprezy przegrywie';
+    return sharedPreferences.getString(SharedPrefs.keyPartyName) ?? '';
   }
 
   void update(String partyName) {

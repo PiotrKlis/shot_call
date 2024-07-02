@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_call/screens/home/call_button_provider.dart';
@@ -34,6 +33,7 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final partyName = ref.watch(partyNameProvider);
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text(ref.watch(nicknameProvider))),
@@ -44,45 +44,47 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
           child: Column(
             children: [
               Text(
-                'Impreza: ${ref.watch(partyNameProvider)}',
+                partyName.isNotEmpty
+                    ? 'Impreza: $partyName'
+                    : 'Nie jesteś na żadnej imprezie przegrywie',
                 style: const TextStyle(fontSize: 24),
               ),
-              Consumer(
-                builder: (context, ref, child) {
-                  return ref.watch(callButtonProvider).when(
-                    data: (data) {
-                      switch (data) {
-                        case CallButtonState.idle:
-                          return ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Click me to call the shots'),
-                          );
-                        case CallButtonState.calling:
-                          return ElevatedButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Somebody has called the shots!',
-                            ),
-                          );
-                        case CallButtonState.relieve:
-                          return ElevatedButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'You called the shots. Click to stop it.',
-                            ),
-                          );
-                        case CallButtonState.empty:
-                          return Container();
-                      }
-                    },
-                    error: (error, stackTrace) {
-                      Logger.error(error, stackTrace);
-                      return const Text('Something went wrong :/');
-                    },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
-                  );
+              ref.watch(callTheShotsButtonProvider).when(
+                data: (data) {
+                  switch (data) {
+                    case CallButtonState.idle:
+                      return ElevatedButton(
+                        onPressed: () {
+                          ref
+                              .read(callTheShotsButtonProvider.notifier)
+                              .callTheShots();
+                        },
+                        child: const Text('Click me to call the shots'),
+                      );
+                    case CallButtonState.calling:
+                      return ElevatedButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Somebody has called the shots!',
+                        ),
+                      );
+                    case CallButtonState.relieve:
+                      return ElevatedButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'You called the shots. Click to stop it.',
+                        ),
+                      );
+                    case CallButtonState.empty:
+                      return Container();
+                  }
+                },
+                error: (error, stackTrace) {
+                  Logger.error(error, stackTrace);
+                  return const Text('Something went wrong :/');
+                },
+                loading: () {
+                  return const CircularProgressIndicator();
                 },
               ),
             ],
@@ -187,18 +189,6 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
     //     ),
     //   );
     // }
-  }
-
-  Future<void> _shotsCallPressed() async {
-    final nickname = sharedPreferences.getString(SharedPrefs.keyNickname);
-    final party = sharedPreferences.getString('');
-    _addAlarmToParty(party, nickname);
-  }
-
-  void _addAlarmToParty(String? party, String? nickname) {
-    FirebaseFirestore.instance.collection('parties').doc(party).update({
-      'alarm': FieldValue.arrayUnion([nickname]),
-    });
   }
 
   Future<void> _showAskForNicknameDialog(BuildContext context) async {

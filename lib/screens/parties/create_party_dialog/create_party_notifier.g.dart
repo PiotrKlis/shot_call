@@ -7,7 +7,7 @@ part of 'create_party_notifier.dart';
 // **************************************************************************
 
 String _$createPartyStateNotifierHash() =>
-    r'd4ce3ed96b6fc9fb51f696ac2ce1f6d75a930c55';
+    r'2cf653fc5f6fdaa887c288e8f61ea2a6c379c3b0';
 
 /// See also [CreatePartyStateNotifier].
 @ProviderFor(CreatePartyStateNotifier)

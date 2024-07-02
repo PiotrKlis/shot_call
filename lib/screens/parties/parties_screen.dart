@@ -104,12 +104,12 @@ class _PartiesListContent extends StatelessWidget {
 
   Future<void> _showPartyPasswordDialog(
     BuildContext context,
-    String partyId,
+    String partyName,
   ) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return PartyPasswordDialog(partyId: partyId);
+        return PartyPasswordDialog(partyName: partyName);
       },
     );
   }

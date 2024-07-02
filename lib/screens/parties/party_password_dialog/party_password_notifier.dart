@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shot_call/screens/home/party_name_provider.dart';
 import 'package:shot_call/shared_prefs.dart';
 import 'package:shot_call/utils/should_show_error.dart';
 
@@ -14,14 +15,14 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
   }
 
   Future<void> joinParty({
-    required String partyId,
+    required String partyName,
     required String password,
   }) async {
     try {
-      final party = await _getPartyData(partyId);
+      final party = await _getPartyData(partyName);
       final isPasswordCorrect = party['password'] == password;
       if (isPasswordCorrect) {
-        await _handleCorrectPassword(partyId);
+        await _handleCorrectPassword(partyName);
       } else {
         _handleIncorrectPassword();
       }
@@ -35,9 +36,10 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
     state = AsyncValue.error('Invalid password', StackTrace.current);
   }
 
-  Future<void> _handleCorrectPassword(String partyId) async {
-    await _addUserToParty(partyId);
-    await FirebaseMessaging.instance.subscribeToTopic(partyId);
+  Future<void> _handleCorrectPassword(String partyName) async {
+    await _addUserToParty(partyName);
+    // await FirebaseMessaging.instance.subscribeToTopic(partyId);
+    ref.read(partyNameProvider.notifier).update(partyName);
     state = const AsyncValue.data(null);
   }
 

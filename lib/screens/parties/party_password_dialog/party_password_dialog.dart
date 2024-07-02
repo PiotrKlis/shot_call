@@ -8,9 +8,9 @@ import 'package:shot_call/utils/screen_navigation_key.dart';
 import 'package:shot_call/utils/should_show_error.dart';
 
 class PartyPasswordDialog extends ConsumerWidget {
-  const PartyPasswordDialog({required this.partyId, super.key});
+  const PartyPasswordDialog({required this.partyName, super.key});
 
-  final String partyId;
+  final String partyName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,7 +46,7 @@ class PartyPasswordDialog extends ConsumerWidget {
           child: const Text('OK'),
           onPressed: () {
             ref.read(partyPasswordNotifierProvider.notifier).joinParty(
-                  partyId: partyId,
+                  partyName: partyName,
                   password: controller.text,
                 );
           },
@@ -62,7 +62,7 @@ class PartyPasswordDialog extends ConsumerWidget {
           ..pop()
           ..pushNamed(
             ScreenNavigationKey.partyMembers,
-            pathParameters: {NavigationConstants.partyId: partyId},
+            pathParameters: {NavigationConstants.partyId: partyName},
           );
       }
       if (next is AsyncError) {

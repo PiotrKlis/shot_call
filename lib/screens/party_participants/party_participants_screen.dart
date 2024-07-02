@@ -44,9 +44,6 @@ class _ParticipantsList extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(participants[index]),
-                      onTap: () {
-                        // _showPartyPasswordDialog(context, id);
-                      },
                     );
                   },
                 );

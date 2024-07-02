@@ -6,6 +6,7 @@ late SharedPreferences sharedPreferences;
 @injectable
 class SharedPrefs {
   static const String keyNickname = 'key_nickname';
+  static const String keyPartyName = 'key_party_name';
 
   Future<void> init() async {
     sharedPreferences = await SharedPreferences.getInstance();

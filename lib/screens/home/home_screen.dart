@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
 import 'package:shot_call/screens/home/nickname_provider.dart';
+import 'package:shot_call/screens/home/party_name_provider.dart';
 import 'package:shot_call/shared_prefs.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -38,7 +39,7 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20),
-          child: const Text("New is coming"),
+          child: Text(ref.watch(partyNameProvider)),
         ),
       ),
     );

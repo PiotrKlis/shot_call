@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shot_call/screens/home/call_button_provider.dart';
 import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
 import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/screens/home/party_name_provider.dart';
 import 'package:shot_call/shared_prefs.dart';
+import 'package:shot_call/utils/logger.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +41,52 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20),
-          child: Text(ref.watch(partyNameProvider)),
+          child: Column(
+            children: [
+              Text(
+                'Impreza: ${ref.watch(partyNameProvider)}',
+                style: const TextStyle(fontSize: 24),
+              ),
+              Consumer(
+                builder: (context, ref, child) {
+                  return ref.watch(callButtonProvider).when(
+                    data: (data) {
+                      switch (data) {
+                        case CallButtonState.idle:
+                          return ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Click me to call the shots'),
+                          );
+                        case CallButtonState.calling:
+                          return ElevatedButton(
+                            onPressed: () {},
+                            child: const Text(
+                              'Somebody has called the shots!',
+                            ),
+                          );
+                        case CallButtonState.relieve:
+                          return ElevatedButton(
+                            onPressed: () {},
+                            child: const Text(
+                              'You called the shots. Click to stop it.',
+                            ),
+                          );
+                        case CallButtonState.empty:
+                          return Container();
+                      }
+                    },
+                    error: (error, stackTrace) {
+                      Logger.error(error, stackTrace);
+                      return const Text('Something went wrong :/');
+                    },
+                    loading: () {
+                      return const CircularProgressIndicator();
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

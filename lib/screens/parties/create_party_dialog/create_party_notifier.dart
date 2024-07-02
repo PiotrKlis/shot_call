@@ -24,7 +24,7 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
 
   Future<void> _createNewParty(String partyName, String password) async {
     await FirebaseFirestore.instance.collection('parties').doc(partyName).set({
-      'alarm': <String>[],
+      'alarm': '',
       'password': password,
       'participants': FieldValue.arrayUnion(
         [sharedPreferences.getString(SharedPrefs.keyNickname)],

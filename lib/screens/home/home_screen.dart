@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
+import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/shared_prefs.dart';
-import 'package:shot_call/utils/connection_status.dart';
-import 'package:shot_call/utils/context_extensions.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -14,8 +13,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreen extends ConsumerState<HomeScreen> {
-  String nickname = sharedPreferences.getString(SharedPrefs.keyNickname) ?? '@';
-
   @override
   void initState() {
     super.initState();
@@ -36,12 +33,12 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("nickname")),
+        title: Center(child: Text(ref.watch(nicknameProvider))),
       ),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20),
-          child: Text("New is coming"),
+          child: const Text("New is coming"),
         ),
       ),
     );
@@ -161,7 +158,7 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return NicknameAlertDialog();
+        return const NicknameAlertDialog();
       },
     );
   }

@@ -46,10 +46,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: goRouter,
       title: 'Call the Shots',
-      theme: FlexThemeData.light(
-        scheme: FlexScheme.bahamaBlue,
+      theme: FlexThemeData.dark(
+        scheme: FlexScheme.red,
         useMaterial3: true,
-        typography: Typography.material2021(),
       ),
     );
   }

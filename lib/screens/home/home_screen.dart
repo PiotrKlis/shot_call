@@ -33,162 +33,9 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final partyName = ref.watch(partyNameProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text(ref.watch(nicknameProvider))),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text(
-                partyName.isNotEmpty
-                    ? 'Impreza: $partyName'
-                    : 'Nie jesteś na żadnej imprezie przegrywie',
-                style: const TextStyle(fontSize: 24),
-              ),
-              ref.watch(callTheShotsButtonProvider).when(
-                data: (data) {
-                  switch (data) {
-                    case CallButtonState.idle:
-                      return ElevatedButton(
-                        onPressed: () {
-                          ref
-                              .read(callTheShotsButtonProvider.notifier)
-                              .callTheShots();
-                        },
-                        child: const Text('Click me to call the shots'),
-                      );
-                    case CallButtonState.calling:
-                      return ElevatedButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Somebody has called the shots!',
-                        ),
-                      );
-                    case CallButtonState.relieve:
-                      return ElevatedButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'You called the shots. Click to stop it.',
-                        ),
-                      );
-                    case CallButtonState.empty:
-                      return Container();
-                  }
-                },
-                error: (error, stackTrace) {
-                  Logger.error(error, stackTrace);
-                  return const Text('Something went wrong :/');
-                },
-                loading: () {
-                  return const CircularProgressIndicator();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+    return SafeArea(
+      child: _HomeScreenContent(),
     );
-  }
-
-  Widget getViewContent() {
-    return Container();
-    // if (sharedPreferences.getString(SharedPrefs.partyName) != null) {
-    //   //This should be StreamBuilder<DocumentSnapshot>
-    //   return StreamBuilder(
-    //     stream: FirebaseFirestore.instance
-    //         .collection('parties')
-    //         .doc(sharedPreferences.getString(SharedPrefs.partyName))
-    //         .snapshots(),
-    //     builder: (BuildContext context, AsyncSnapshot partySnapshot) {
-    //       List<String> alarmNicknames = [];
-    //       if (partySnapshot.connectionState == ConnectionState.active) {
-    //         alarmNicknames = (partySnapshot.data?['alarm'] as List<dynamic>)
-    //             .map((e) => e.toString())
-    //             .toList();
-    //       }
-    //       return Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: [
-    //           const Text(
-    //               'Zaschło Ci w gardle i nie masz z kim się napić? Wciśnij przycisk aby wezwać posiłki.',
-    //               textAlign: TextAlign.center,
-    //               style: TextStyle(fontSize: 24)),
-    //           const SizedBox(height: 32),
-    //           ElevatedButton(
-    //             style: ElevatedButton.styleFrom(
-    //               backgroundColor: Colors.red,
-    //             ),
-    //             child: const Padding(
-    //               padding: EdgeInsets.all(8.0),
-    //               child: Text(
-    //                 '🚨 WÓD - CALL 🚨\n🚨 WEZWIJ POMOC 🚨',
-    //                 textAlign: TextAlign.center,
-    //                 style: TextStyle(color: Colors.white, fontSize: 24),
-    //               ),
-    //             ),
-    //             onPressed: () async {
-    //               await _shotsCallPressed();
-    //             },
-    //           ),
-    //           const SizedBox(height: 32),
-    //           Visibility(
-    //             visible: alarmNicknames.contains(sharedPreferences.get(SharedPrefs.keyNickname)),
-    //             child: ElevatedButton(
-    //               style: ElevatedButton.styleFrom(
-    //                 backgroundColor: Colors.blue,
-    //               ),
-    //               child: const Padding(
-    //                 padding: EdgeInsets.all(8.0),
-    //                 child: Text(
-    //                     textAlign: TextAlign.center,
-    //                     style: TextStyle(color: Colors.white, fontSize: 24),
-    //                     '😌 ODWOŁAJ ALARM \n KRYZYS ZOSTAŁ ZAŻEGNANY 😌'),
-    //               ),
-    //               onPressed: () {
-    //                 FirebaseFirestore.instance
-    //                     .collection('parties')
-    //                     .doc(sharedPreferences.getString(SharedPrefs.partyName))
-    //                     .update({
-    //                   'alarm': FieldValue.arrayRemove([nickname])
-    //                 });
-    //               },
-    //             ),
-    //           ),
-    //           const SizedBox(height: 32),
-    //           Visibility(
-    //             visible: alarmNicknames.isNotEmpty,
-    //             child: Container(
-    //               decoration: const BoxDecoration(
-    //                   color: Colors.red,
-    //                   borderRadius: BorderRadius.all(Radius.circular(20))),
-    //               padding: const EdgeInsets.all(20),
-    //               child: Text(
-    //                 textAlign: TextAlign.center,
-    //                 '🚨 🚨 🚨 🚨 🚨 🚨 \n\n Użytkownik $alarmNicknames potrzebuje pomocy! Rzuć wszystko i jak naszybciej idź się z nim napić zanim wyschnie! \n\n 🚨 🚨 🚨 🚨 🚨 🚨',
-    //                 style: const TextStyle(
-    //                     fontSize: 24,
-    //                     fontWeight: FontWeight.bold,
-    //                     color: Colors.white),
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   );
-    // } else {
-    //   return const Center(
-    //     child: Text(
-    //       'Nie jesteś na żadnej imprezie cieniasie',
-    //       style: TextStyle(fontSize: 24),
-    //     ),
-    //   );
-    // }
   }
 
   Future<void> _showAskForNicknameDialog(BuildContext context) async {
@@ -198,6 +45,151 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
       builder: (BuildContext context) {
         return const NicknameAlertDialog();
       },
+    );
+  }
+}
+
+class _HomeScreenContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(24),
+        child: Container(
+          margin: const EdgeInsets.only(top: 24),
+          child: const _CallTheShotsButton(),
+        ),
+      ),
+    );
+  }
+}
+
+class _PartyName extends ConsumerWidget {
+  const _PartyName();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final partyName = ref.watch(partyNameProvider);
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        partyName.isNotEmpty
+            ? 'Impreza: $partyName'
+            : 'Nie jesteś na żadnej imprezie przegrywie',
+        style: const TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+class _CallTheShotsButton extends ConsumerWidget {
+  const _CallTheShotsButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(callTheShotsButtonProvider).when(
+      data: (data) {
+        switch (data) {
+          case CallButtonState.idle:
+            return const _IdleButton();
+          case CallButtonState.calling:
+            return const _CallingButton();
+          case CallButtonState.relieve:
+            return const _RelieveButton();
+          case CallButtonState.empty:
+            return Container();
+        }
+      },
+      error: (error, stackTrace) {
+        Logger.error(error, stackTrace);
+        return const Text('Something went wrong :/');
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+}
+
+class _RelieveButton extends StatelessWidget {
+  const _RelieveButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+      ),
+      child: const Padding(
+        padding: EdgeInsets.all(8),
+        child: Text(
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontSize: 24),
+          '😌 ODWOŁAJ ALARM \n KRYZYS ZOSTAŁ ZAŻEGNANY 😌',
+        ),
+      ),
+      onPressed: () {
+        //
+      },
+    );
+  }
+}
+
+class _CallingButton extends StatelessWidget {
+  const _CallingButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: const Text(
+        textAlign: TextAlign.center,
+        '🚨 🚨 🚨 🚨 🚨 🚨 \n\n Użytkownik "dodaj nickname" potrzebuje pomocy! Rzuć wszystko i jak naszybciej idź się z nim napić zanim wyschnie! \n\n 🚨 🚨 🚨 🚨 🚨 🚨',
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+class _IdleButton extends ConsumerWidget {
+  const _IdleButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        const Text(
+          'Zaschło Ci w gardle i nie masz z kim się napić? Wciśnij przycisk żeby wezwać posiłki!',
+          style: TextStyle(
+            fontSize: 36,
+          ),
+        ),
+        const SizedBox(height: 32),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(24),
+            child: Text(
+              '🚨 WÓD - CALL 🚨\n🚨 WEZWIJ POMOC 🚨',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+          ),
+          onPressed: () {
+            ref.read(callTheShotsButtonProvider.notifier).callTheShots();
+          },
+        ),
+      ],
     );
   }
 }

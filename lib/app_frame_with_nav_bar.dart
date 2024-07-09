@@ -25,7 +25,11 @@ class AppFrameWithNavBar extends ConsumerWidget {
           ),
           NavigationDestination(
             label: 'Parties',
-            icon: Icon(Icons.six_ft_apart),
+            icon: Icon(Icons.meeting_room),
+          ),
+          NavigationDestination(
+            label: 'User',
+            icon: Icon(Icons.manage_accounts),
           ),
         ],
         onDestinationSelected: _goBranch,

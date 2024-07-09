@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shot_call/app_frame_with_nav_bar.dart';
+import 'package:shot_call/screens/account/account_screen.dart';
 import 'package:shot_call/screens/party_participants/party_participants_screen.dart';
 import 'package:shot_call/screens/home/home_screen.dart';
 import 'package:shot_call/screens/parties/parties_screen.dart';
@@ -10,6 +11,7 @@ import 'package:shot_call/utils/screen_navigation_key.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeShellNavigatorKey = GlobalKey<NavigatorState>();
 final _partiesShellNavigatorKey = GlobalKey<NavigatorState>();
+final _accountShellNavigatorKey = GlobalKey<NavigatorState>();
 
 final goRouter = GoRouter(
   initialLocation: '/${ScreenNavigationKey.home}',
@@ -62,6 +64,20 @@ final goRouter = GoRouter(
                   },
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _accountShellNavigatorKey,
+          routes: [
+            GoRoute(
+              name: ScreenNavigationKey.account,
+              path: '/${ScreenNavigationKey.account}',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return const NoTransitionPage(
+                  child: AccountScreen(),
+                );
+              },
             ),
           ],
         ),

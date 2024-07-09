@@ -40,9 +40,7 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
 
   Future<void> _handleCorrectPassword(String partyName) async {
     await _addUserToParty(partyName);
-    // await FirebaseMessaging.instance.subscribeToTopic(partyId);
     ref.read(partyNameProvider.notifier).update(partyName);
-    // ref.read(callTheShotsButtonProvider.notifier).updateParty();
     state = const AsyncValue.data(null);
   }
 

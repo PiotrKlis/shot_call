@@ -17,16 +17,16 @@ class CallTheShotsButton extends _$CallTheShotsButton {
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
-        final alarm = snapshot.data()?['alarm'] as String;
-        if (alarm == nickname) {
-          return CallButtonState.relieve;
-        } else if (alarm.isNotEmpty) {
-          return CallButtonState.calling;
+        final alarmer = snapshot.data()?['alarm'] as String;
+        if (alarmer == nickname) {
+          return CallButtonState(CallButtonStatus.relieve, alarmer);
+        } else if (alarmer.isNotEmpty) {
+          return CallButtonState(CallButtonStatus.calling, alarmer);
         } else {
-          return CallButtonState.idle;
+          return CallButtonState(CallButtonStatus.idle, null);
         }
       } else {
-        return CallButtonState.empty;
+        return CallButtonState(CallButtonStatus.empty, null);
       }
     });
   }
@@ -39,6 +39,21 @@ class CallTheShotsButton extends _$CallTheShotsButton {
         .doc(partyName)
         .update({'alarm': nickname});
   }
+
+  void relieve() {
+    final partyName = ref.read(partyNameProvider);
+    FirebaseFirestore.instance
+        .collection('parties')
+        .doc(partyName)
+        .update({'alarm': ''});
+  }
 }
 
-enum CallButtonState { idle, calling, relieve, empty }
+enum CallButtonStatus { idle, calling, relieve, empty }
+
+class CallButtonState {
+  CallButtonState(this.status, this.alarmer);
+
+  final CallButtonStatus status;
+  final String? alarmer;
+}

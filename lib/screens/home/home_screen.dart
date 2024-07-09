@@ -1,8 +1,8 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_call/screens/home/call_button_provider.dart';
 import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
-import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/screens/home/party_name_provider.dart';
 import 'package:shot_call/shared_prefs.dart';
 import 'package:shot_call/utils/logger.dart';
@@ -102,7 +102,7 @@ class _CallTheShotsButton extends ConsumerWidget {
       },
       error: (error, stackTrace) {
         Logger.error(error, stackTrace);
-        return const Text('Something went wrong :/');
+        return const Text('Zapisz się na imprezę przegrywie');
       },
       loading: () {
         return const Center(child: CircularProgressIndicator());
@@ -116,21 +116,32 @@ class _RelieveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-      ),
-      child: const Padding(
-        padding: EdgeInsets.all(8),
-        child: Text(
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontSize: 24),
-          '😌 ODWOŁAJ ALARM \n KRYZYS ZOSTAŁ ZAŻEGNANY 😌',
+    return Column(
+      children: [
+        const Text(
+          'Poczekaj, pomoc jest w drodze',
+          style: TextStyle(
+            fontSize: 36,
+          ),
         ),
-      ),
-      onPressed: () {
-        //
-      },
+        const SizedBox(height: 48),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(8),
+            child: Text(
+              '🚨 WÓD - CALL 🚨\n🚨 WEZWIJ POMOC 🚨',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+          ),
+          onPressed: () {
+            // ref.read(callTheShotsButtonProvider.notifier).callTheShots();
+          },
+        ),
+      ],
     );
   }
 }
@@ -140,34 +151,10 @@ class _CallingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: const Text(
-        textAlign: TextAlign.center,
-        '🚨 🚨 🚨 🚨 🚨 🚨 \n\n Użytkownik "dodaj nickname" potrzebuje pomocy! Rzuć wszystko i jak naszybciej idź się z nim napić zanim wyschnie! \n\n 🚨 🚨 🚨 🚨 🚨 🚨',
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class _IdleButton extends ConsumerWidget {
-  const _IdleButton();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         const Text(
-          'Zaschło Ci w gardle i nie masz z kim się napić? Wciśnij przycisk żeby wezwać posiłki!',
+          '🚨 🚨 🚨 🚨 🚨 🚨 \n\n Użytkownik "dodaj nickname" potrzebuje pomocy! Rzuć wszystko i jak naszybciej idź się z nim napić zanim wyschnie! \n\n 🚨 🚨 🚨 🚨 🚨 🚨',
           style: TextStyle(
             fontSize: 36,
           ),
@@ -186,8 +173,53 @@ class _IdleButton extends ConsumerWidget {
             ),
           ),
           onPressed: () {
-            ref.read(callTheShotsButtonProvider.notifier).callTheShots();
+            // ref.read(callTheShotsButtonProvider.notifier).callTheShots();
           },
+        ),
+      ],
+    );
+  }
+}
+
+class _IdleButton extends ConsumerWidget {
+  const _IdleButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        const Text(
+          'Zaschło Ci w gardle i nie masz z kim się napić?',
+          style: TextStyle(
+            fontSize: 36,
+          ),
+        ),
+        const SizedBox(
+          height: 32,
+        ),
+        const Text(
+          'Wciśnij przycisk żeby wezwać posiłki!',
+          style: TextStyle(
+            fontSize: 36,
+          ),
+        ),
+        const SizedBox(height: 64),
+        AvatarGlow(
+          startDelay: const Duration(milliseconds: 1000),
+          child: Material(
+            elevation: 8,
+            shape: const CircleBorder(),
+            color: Colors.redAccent,
+            child: Padding(
+              padding: const EdgeInsets.all(64),
+              child: CircleAvatar(
+                backgroundColor: Colors.redAccent,
+                radius: 120,
+                child: Image.asset('assets/images/alarm.png'),
+                // backgroundImage: AssetImage('assets/images/alarm.png'),
+              ),
+            ),
+          ),
         ),
       ],
     );

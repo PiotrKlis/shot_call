@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       routerConfig: goRouter,
       title: 'Call the Shots',
       theme: FlexThemeData.dark(
-        scheme: FlexScheme.red,
+        // scheme: FlexScheme.red,
         useMaterial3: true,
       ),
     );

@@ -10,7 +10,7 @@ class AccountScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Container(
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -18,7 +18,7 @@ class AccountScreen extends ConsumerWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(ref.read(nicknameProvider)),
-            SizedBox(height: 16,),
+            const SizedBox(height: 16,),
             const Text('Current party',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),

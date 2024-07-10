@@ -10,16 +10,15 @@ class PartiesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text('Imprezki')),
-      ),
-      body: const _PartiesScreenContent(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showCreatePartyDialog(context);
-        },
-        child: const Icon(Icons.add),
+    return SafeArea(
+      child: Scaffold(
+        body: const _PartiesScreenContent(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showCreatePartyDialog(context);
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

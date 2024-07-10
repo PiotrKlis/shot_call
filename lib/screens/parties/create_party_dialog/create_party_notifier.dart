@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shot_call/screens/home/call_button_provider.dart';
 import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/screens/home/party_name_provider.dart';
-import 'package:shot_call/shared_prefs.dart';
 
 part 'create_party_notifier.g.dart';
 
@@ -16,7 +14,7 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
 
   Future<void> createParty(String partyName, String password) async {
     try {
-      await _removeNicknameFromOtherParties();
+      await _removeDataFromOtherParties();
       await _createNewParty(partyName, password);
       state = const AsyncValue.data(null);
     } catch (error, stackTrace) {
@@ -35,19 +33,41 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
     ref.read(partyNameProvider.notifier).update(partyName);
   }
 
-  Future<void> _removeNicknameFromOtherParties() async {
+  Future<void> _removeDataFromOtherParties() async {
     await () async {
       final partyName = ref.read(partyNameProvider);
       if (partyName.isNotEmpty) {
-        await FirebaseFirestore.instance
-            .collection('parties')
-            .doc(partyName)
-            .update({
-          'participants': FieldValue.arrayRemove(
-            [ref.read(nicknameProvider)],
-          ),
-        });
+        await _removeAlarmer(partyName);
+        await _removeParticipant(partyName);
       }
     }();
+  }
+
+  Future<void> _removeAlarmer(String partyName) async {
+    final party = await FirebaseFirestore.instance
+        .collection('parties')
+        .doc(partyName)
+        .get();
+
+    final nickname = ref.read(nicknameProvider);
+    final alarmer = party['alarm'] as String;
+
+    if (alarmer == nickname) {
+      await FirebaseFirestore.instance
+          .collection('parties')
+          .doc(partyName)
+          .update({'alarm': ''});
+    }
+  }
+
+  Future<void> _removeParticipant(String partyName) async {
+    await FirebaseFirestore.instance
+        .collection('parties')
+        .doc(partyName)
+        .update({
+      'participants': FieldValue.arrayRemove(
+        [ref.read(nicknameProvider)],
+      ),
+    });
   }
 }

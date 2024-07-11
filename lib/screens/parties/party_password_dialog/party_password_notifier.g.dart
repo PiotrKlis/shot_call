@@ -7,7 +7,7 @@ part of 'party_password_notifier.dart';
 // **************************************************************************
 
 String _$partyPasswordNotifierHash() =>
-    r'33df7eb371df7a8d93faea0dc2adabda2bdf020a';
+    r'7d639230d1ae72de076dbd613383e4922a7b3086';
 
 /// See also [PartyPasswordNotifier].
 @ProviderFor(PartyPasswordNotifier)

@@ -3,12 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shot_call/utils/get_it.dart';
-
-void _onDidReceiveBackgroundNotificationResponse(NotificationResponse details) {
-  if (details.input != null) {
-    print('PKPK notification received! onDidReceiveNotificationResponse');
-  }
-}
+import 'package:shot_call/utils/logger.dart';
 
 @injectable
 class NotificationsService {
@@ -20,15 +15,17 @@ class NotificationsService {
   }
 
   Future<void> display(RemoteMessage message) async {
-    // To display the notification in device
     try {
+      Logger.log('displaying message! $message');
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const notificationDetails = NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            color: Colors.green,
-            importance: Importance.max,
-            playSound: true,
-            priority: Priority.high),
+        android: AndroidNotificationDetails(
+          'channelId',
+          'channelName',
+          color: Colors.green,
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
       );
       await _notificationsPlugin.show(
         id,
@@ -37,8 +34,8 @@ class NotificationsService {
         notificationDetails,
         payload: message.data['route'] as String?,
       );
-    } catch (e) {
-      print('PKPK notification display failed!');
+    } catch (error, stacktrace) {
+      Logger.error('PKPK notification display failed!', stacktrace);
     }
   }
 
@@ -56,33 +53,42 @@ class NotificationsService {
   }
 
   void _setFirebaseNotificationsListeners() {
-    FirebaseMessaging.onBackgroundMessage(
-      (message) {
-        print('PKPK notification received! onBackgroundMessage');
-        return display(message);
-      },
-    );
-
     FirebaseMessaging.instance.getInitialMessage().then((message) {
-      print('PKPK notification received! getInitialMessage');
-      // display(message!);
+      Logger.log('getInitialMessage $message');
+      if (message != null) {
+        Logger.log('getInitialMessage != null $message');
+        display(message);
+      }
     });
     // To initialise when app is not terminated
     FirebaseMessaging.onMessage.listen((message) {
+      Logger.log('onMessage $message');
       if (message.notification != null) {
-        print('PKPK notification received! onMessage');
+        Logger.log('onMessage.notification != null $message');
         display(message);
       }
     });
     // To handle when app is open in
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('PKPK notification received! onMessageOpenedApp');
+      Logger.log('PKPK notification received! onMessageOpenedApp $message');
       display(message);
     });
 
-    FirebaseMessaging.onBackgroundMessage((message) {
-      print('PKPK notification received! onBackgroundMessage');
-      return display(message);
-    });
+    FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
+  }
+}
+
+Future<void> backgroundMessageHandler(RemoteMessage message) async {
+  final service = getIt<NotificationsService>();
+  Logger.log('backgroundMessageHandler $message');
+  await service.display(message);
+}
+
+void _onDidReceiveBackgroundNotificationResponse(
+    NotificationResponse response) {
+  Logger.log('onDidReceiveNotificationResponse $response');
+
+  if (response.input != null) {
+    Logger.log('onDidReceiveNotificationResponse input != null');
   }
 }

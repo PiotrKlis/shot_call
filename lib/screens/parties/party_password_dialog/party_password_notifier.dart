@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/screens/home/party_name_provider.dart';
@@ -38,6 +39,7 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
   Future<void> _handleCorrectPassword(String partyName) async {
     await _addUserToParty(partyName);
     await _removeDataFromOtherParties();
+    await FirebaseMessaging.instance.subscribeToTopic(partyName);
     ref.read(partyNameProvider.notifier).update(partyName);
     state = const AsyncValue.data(null);
   }

@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -43,13 +44,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: goRouter,
-      title: 'Call the Shots',
-      theme: FlexThemeData.dark(
-        // scheme: FlexScheme.red,
-        useMaterial3: true,
-      ),
+    return DevicePreview(
+      builder: (BuildContext context) {
+        return MaterialApp.router(
+          useInheritedMediaQuery: true,
+          locale: DevicePreview.locale(context),
+          builder: DevicePreview.appBuilder,
+          routerConfig: goRouter,
+          title: 'Call the Shots',
+          theme: FlexThemeData.dark(
+            // scheme: FlexScheme.red,
+            useMaterial3: true,
+          ),
+        );
+      },
     );
   }
 }

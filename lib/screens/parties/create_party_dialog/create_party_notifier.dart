@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shot_call/screens/home/nickname_provider.dart';
 import 'package:shot_call/screens/home/party_name_provider.dart';
@@ -16,6 +17,7 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
     try {
       await _removeDataFromOtherParties();
       await _createNewParty(partyName, password);
+      await FirebaseMessaging.instance.subscribeToTopic(partyName);
       state = const AsyncValue.data(null);
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);

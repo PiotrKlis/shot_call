@@ -65,51 +65,48 @@ class _CallTheShotsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      margin: const EdgeInsets.only(top: 24),
-      child: ref.watch(callTheShotsButtonProvider).when(
-        data: (data) {
-          switch (data.status) {
-            case CallButtonStatus.idle:
-              return _ButtonView(
-                'Zaschło Ci w gardle i nie masz się z kim napić?',
-                'Wciśnij przycisk żeby wezwać posiłki!',
-                Colors.orange,
-                'notification',
-                () {
-                  ref.read(callTheShotsButtonProvider.notifier).callTheShots();
-                },
-              );
-            case CallButtonStatus.calling:
-              return _ButtonView(
-                '${data.alarmer} potrzebuje pomocy!',
-                'Natychmiast rzuć wszytko co robisz i idź się z nim napić!',
-                Colors.red,
-                'alarm',
-                null,
-              );
-            case CallButtonStatus.relieve:
-              return _ButtonView(
-                'Nie lękaj się! Pomoc jest w drodze!',
-                'Kliknij żeby odwołać alarm.',
-                Colors.green,
-                'relieved',
-                () {
-                  ref.read(callTheShotsButtonProvider.notifier).relieve();
-                },
-              );
-            case CallButtonStatus.empty:
-              return const Text('Zapisz się na imprezę przegrywie');
-          }
-        },
-        error: (error, stackTrace) {
-          Logger.error(error, stackTrace);
-          return const Text('Zapisz się na imprezę przegrywie');
-        },
-        loading: () {
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+    return ref.watch(callTheShotsButtonProvider).when(
+      data: (data) {
+        switch (data.status) {
+          case CallButtonStatus.idle:
+            return _ButtonView(
+              'Zaschło Ci w gardle i nie masz się z kim napić?',
+              'Wciśnij przycisk żeby wezwać posiłki!',
+              Colors.orange,
+              'notification',
+              () {
+                ref.read(callTheShotsButtonProvider.notifier).callTheShots();
+              },
+            );
+          case CallButtonStatus.calling:
+            return _ButtonView(
+              '${data.alarmer} potrzebuje pomocy!',
+              'Natychmiast rzuć wszytko co robisz i idź się z nim napić!',
+              Colors.red,
+              'alarm',
+              null,
+            );
+          case CallButtonStatus.relieve:
+            return _ButtonView(
+              'Nie lękaj się! Pomoc jest w drodze!',
+              'Kliknij żeby odwołać alarm.',
+              Colors.green,
+              'relieved',
+              () {
+                ref.read(callTheShotsButtonProvider.notifier).relieve();
+              },
+            );
+          case CallButtonStatus.empty:
+            return const Text('Zapisz się na imprezę przegrywie');
+        }
+      },
+      error: (error, stackTrace) {
+        Logger.error(error, stackTrace);
+        return const Text('Zapisz się na imprezę przegrywie');
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
@@ -157,7 +154,6 @@ class _ButtonView extends ConsumerWidget {
           child: GestureDetector(
             onTap: onPressed,
             child: Material(
-              elevation: 8,
               shape: const CircleBorder(),
               color: color,
               child: Padding(

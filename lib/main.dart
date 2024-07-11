@@ -42,6 +42,10 @@ Future<void> _askForNotificationPermissions() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // iphone 12 mini
+  // Apple iPhone 13
+  // medium phone
+  // big
   @override
   Widget build(BuildContext context) {
     return DevicePreview(

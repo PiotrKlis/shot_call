@@ -51,11 +51,8 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
 class _HomeScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(16),
-        child: const _CallTheShotsSection(),
-      ),
+    return const SingleChildScrollView(
+      child: _CallTheShotsSection(),
     );
   }
 }
@@ -65,48 +62,51 @@ class _CallTheShotsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(callTheShotsButtonProvider).when(
-      data: (data) {
-        switch (data.status) {
-          case CallButtonStatus.idle:
-            return _ButtonView(
-              'Zaschło Ci w gardle i nie masz się z kim napić?',
-              'Wciśnij przycisk żeby wezwać posiłki!',
-              Colors.orange,
-              'notification',
-              () {
-                ref.read(callTheShotsButtonProvider.notifier).callTheShots();
-              },
-            );
-          case CallButtonStatus.calling:
-            return _ButtonView(
-              '${data.alarmer} potrzebuje pomocy!',
-              'Natychmiast rzuć wszytko co robisz i idź się z nim napić!',
-              Colors.red,
-              'alarm',
-              null,
-            );
-          case CallButtonStatus.relieve:
-            return _ButtonView(
-              'Nie lękaj się! Pomoc jest w drodze!',
-              'Kliknij żeby odwołać alarm.',
-              Colors.green,
-              'relieved',
-              () {
-                ref.read(callTheShotsButtonProvider.notifier).relieve();
-              },
-            );
-          case CallButtonStatus.empty:
-            return const Text('Zapisz się na imprezę przegrywie');
-        }
-      },
-      error: (error, stackTrace) {
-        Logger.error(error, stackTrace);
-        return const Text('Zapisz się na imprezę przegrywie');
-      },
-      loading: () {
-        return const Center(child: CircularProgressIndicator());
-      },
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: ref.watch(callTheShotsButtonProvider).when(
+        data: (data) {
+          switch (data.status) {
+            case CallButtonStatus.idle:
+              return _ButtonView(
+                'Zaschło Ci w gardle i nie masz się z kim napić?',
+                'Wciśnij przycisk żeby wezwać posiłki!',
+                Colors.orange,
+                'notification',
+                () {
+                  ref.read(callTheShotsButtonProvider.notifier).callTheShots();
+                },
+              );
+            case CallButtonStatus.calling:
+              return _ButtonView(
+                '${data.alarmer} potrzebuje pomocy!',
+                'Natychmiast rzuć wszytko co robisz i idź się z nim napić!',
+                Colors.red,
+                'alarm',
+                null,
+              );
+            case CallButtonStatus.relieve:
+              return _ButtonView(
+                'Nie lękaj się! Pomoc jest w drodze!',
+                'Kliknij żeby odwołać alarm.',
+                Colors.green,
+                'relieved',
+                () {
+                  ref.read(callTheShotsButtonProvider.notifier).relieve();
+                },
+              );
+            case CallButtonStatus.empty:
+              return const Text('Zapisz się na imprezę przegrywie');
+          }
+        },
+        error: (error, stackTrace) {
+          Logger.error(error, stackTrace);
+          return const Text('Zapisz się na imprezę przegrywie');
+        },
+        loading: () {
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }
@@ -148,7 +148,7 @@ class _ButtonView extends ConsumerWidget {
             fontSize: 28,
           ),
         ),
-        const SizedBox(height: 36),
+        const SizedBox(height: 24),
         AvatarGlow(
           startDelay: const Duration(milliseconds: 1000),
           child: GestureDetector(
@@ -157,7 +157,7 @@ class _ButtonView extends ConsumerWidget {
               shape: const CircleBorder(),
               color: color,
               child: Padding(
-                padding: const EdgeInsets.all(64),
+                padding: const EdgeInsets.all(52),
                 child: CircleAvatar(
                   backgroundColor: color,
                   radius: 120,

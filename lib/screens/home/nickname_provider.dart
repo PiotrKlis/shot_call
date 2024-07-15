@@ -6,7 +6,7 @@ part 'nickname_provider.g.dart';
 class Nickname extends _$Nickname {
   @override
   String build() {
-    return sharedPreferences.getString(SharedPrefs.keyNickname) ?? '@';
+    return sharedPreferences.getString(SharedPrefs.keyNickname) ?? '';
   }
 
   void update(String nickname) {

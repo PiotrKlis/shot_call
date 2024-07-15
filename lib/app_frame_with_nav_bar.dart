@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shot_call/utils/connection_status.dart';
-import 'package:shot_call/utils/context_extensions.dart';
+import 'package:shot_call/utils/extensions/context_extensions.dart';
 
 class AppFrameWithNavBar extends ConsumerWidget {
   const AppFrameWithNavBar({

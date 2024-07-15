@@ -1,12 +1,12 @@
 First app open
 
 1. Notification permission
- - Pojawia się za każdym razem przy otwarciu apki jeżeli nie ma permission
+ - Pojawia się za każdym razem przy otwarciu apki jeżeli nie ma permission ✅
 
 2. Nickname dialog
-  - Non-dismissable dialog
-  - Non empty nickname
-  - Odpala się po zabiciu apki
+  - Non-dismissable dialog ✅
+  - Non empty nickname ✅
+  - Odpala się po zabiciu apki ✅
   - Nickname nie moze byc spacjami i Max liczba chars nickname  // Do Dodania
 
 Parties screen
@@ -28,6 +28,8 @@ Parties screen
 3. Klik na nazwę imprezy nawiguje do widoku imprezowicze
 4. Aktualizuje na bieżąco listę imprez
 5. Jeżeli nie ma żadnej imprezy, pokaż napis że nie ma imprez
+6. Dołączenie do imprezy, wyjście, dołączenie do innej imprezy, stworzenie imprezy itd.
+7. Stworznei imprezie, wyjście, dołączenie do imprezy, stworzenie, dołączenie itd.
 
 Imprezowicze screen
 
@@ -52,3 +54,6 @@ Call the shots
 
 3. Calling
   - Nic się nie da zrobić, button informacyjny
+
+Connection status
+ - Dodaj

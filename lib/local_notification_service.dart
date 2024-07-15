@@ -7,14 +7,14 @@ import 'package:shot_call/utils/logger.dart';
 
 @injectable
 class NotificationsService {
-  final _notificationsPlugin = FlutterLocalNotificationsPlugin();
+  static final _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
   void initialize() {
     _initializePlugin();
     _setFirebaseNotificationsListeners();
   }
 
-  Future<void> display(RemoteMessage message) async {
+  static Future<void> display(RemoteMessage message) async {
     try {
       Logger.log('displaying message! $message');
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -24,7 +24,7 @@ class NotificationsService {
           'channelName',
           color: Colors.green,
           importance: Importance.max,
-          priority: Priority.high,
+          priority: Priority.max,
         ),
       );
       await _notificationsPlugin.show(
@@ -78,10 +78,11 @@ class NotificationsService {
   }
 }
 
+@pragma('vm:entry-point')
 Future<void> backgroundMessageHandler(RemoteMessage message) async {
-  final service = getIt<NotificationsService>();
+  // final service = getIt<NotificationsService>();
   Logger.log('backgroundMessageHandler $message');
-  await service.display(message);
+  await NotificationsService.display(message);
 }
 
 void _onDidReceiveBackgroundNotificationResponse(

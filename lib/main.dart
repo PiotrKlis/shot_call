@@ -44,24 +44,22 @@ class MyApp extends StatelessWidget {
 
   // iphone 12 mini
   // Apple iPhone 13
-  // medium phone
   // big
   @override
   Widget build(BuildContext context) {
-    return DevicePreview(
-      builder: (BuildContext context) {
-        return MaterialApp.router(
-          useInheritedMediaQuery: true,
-          locale: DevicePreview.locale(context),
-          builder: DevicePreview.appBuilder,
-          routerConfig: goRouter,
-          title: 'Call the Shots',
-          theme: FlexThemeData.dark(
-            // scheme: FlexScheme.red,
-            useMaterial3: true,
-          ),
-        );
-      },
+    // return DevicePreview(
+    //   builder: (BuildContext context) {
+    return MaterialApp.router(
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      routerConfig: goRouter,
+      title: 'Call the Shots',
+      theme: FlexThemeData.dark(
+        useMaterial3: true,
+      ),
+      // );
+      // },
     );
   }
 }

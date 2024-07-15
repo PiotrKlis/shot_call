@@ -1,0 +1,54 @@
+First app open
+
+1. Notification permission
+ - Pojawia się za każdym razem przy otwarciu apki jeżeli nie ma permission
+
+2. Nickname dialog
+  - Non-dismissable dialog
+  - Non empty nickname
+  - Odpala się po zabiciu apki
+  - Nickname nie moze byc spacjami i Max liczba chars nickname  // Do Dodania
+
+Parties screen
+
+1. New party dialog
+  - Dismissable dialog
+  - Nazwa imprezy nie może być spacjami i max liczba chars // Do dodania
+  - Hasło nie może byc spacjami i max licza chars // Do dodania
+  - Stworzenie imprezy czysci dane ze starej imprezy, jeśli była
+  - Stworzenie imprezy dodaje uzytkownika do tej imprezy
+  - Stworzenie imprezy nawiguje do widoku imprezowicze
+
+2. Join party dialog
+  - Dismissable
+  - Dołączenie do imprezy czysci dane ze starej imprezy, jesli była
+  - Dołączenie do imprezy dodaje uzytkownika do tej imprezy
+  - Dołączenie do imprezy nawiguje do widoku imprezowicze
+
+3. Klik na nazwę imprezy nawiguje do widoku imprezowicze
+4. Aktualizuje na bieżąco listę imprez
+5. Jeżeli nie ma żadnej imprezy, pokaż napis że nie ma imprez
+
+Imprezowicze screen
+
+1. Pokazuje imprezowiczów
+2. Aktualizacje na biężąco listę imprezowiczów
+
+User screen
+
+1. Username
+2. Current party
+3. Notification switch // Do dodania
+
+Call the shots
+
+1. Idle button
+  - Klik zmienia stan na relieve u klikającego, na calling u innych
+  - Wysyła notyfikacje (foreground, background, killed).
+  - Klik na notyfikację otwiera apkę i nawiguje do ekranu call the shots
+
+2. Relieve button
+  - Klik zmienia stan na idle u wszystkich
+
+3. Calling
+  - Nic się nie da zrobić, button informacyjny

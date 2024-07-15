@@ -1,8 +1,6 @@
-- Notyfikacje
-  - kiedy apka jest zabita, nie dostaje notyfikacji
-  - kiedy apka jest w backgroundzie, duza notyfikacja sie nie wyswietla na screenie
-  -
 - Dodaj notyfikacyjne info do "user" tab
+- pl/en
+- dimens
 - ikona
 - nazwa
-- test na ajfonie małym i dużymoreview
+- test na ajfonie małym i dużym preview

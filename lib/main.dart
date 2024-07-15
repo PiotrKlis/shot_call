@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
 
   // iphone 12 mini
   // Apple iPhone 13
-  // medium phone
   // big
   @override
   Widget build(BuildContext context) {

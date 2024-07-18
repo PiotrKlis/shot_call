@@ -6,6 +6,7 @@ import 'package:shot_call/common/navigation/navigation_constants.dart';
 import 'package:shot_call/common/navigation/screen_navigation_key.dart';
 import 'package:shot_call/common/providers/should_show_error_provider.dart';
 import 'package:shot_call/screens/parties/party_password_dialog/party_password_provider.dart';
+import 'package:shot_call/styleguide/dimens.dart';
 import 'package:shot_call/utils/logger.dart';
 
 class PartyPasswordDialog extends ConsumerWidget {
@@ -31,7 +32,7 @@ class PartyPasswordDialog extends ConsumerWidget {
               focusNode: FocusNode(),
               autofocus: true,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: Dimens.mMargin),
             Visibility(
               visible: ref.watch(shouldShowErrorProvider),
               child: Text(

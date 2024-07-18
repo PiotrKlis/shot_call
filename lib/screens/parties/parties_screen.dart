@@ -5,6 +5,7 @@ import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/parties/create_party_dialog/create_party_dialog.dart';
 import 'package:shot_call/screens/parties/parties_provider.dart';
 import 'package:shot_call/screens/parties/party_password_dialog/party_password_dialog.dart';
+import 'package:shot_call/styleguide/dimens.dart';
 
 class PartiesScreen extends ConsumerWidget {
   const PartiesScreen({super.key});
@@ -41,14 +42,14 @@ class _PartiesScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(
-        24,
+        Dimens.xmMargin,
       ),
       child: SingleChildScrollView(
         child: Column(
           children: [
             Text(
               context.strings.create_party_or_join,
-              style: const TextStyle(fontSize: 24),
+              style: const TextStyle(fontSize: Dimens.sFontSize),
             ),
             const _PartiesListConsumer(),
           ],
@@ -64,7 +65,7 @@ class _PartiesListConsumer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: const EdgeInsets.only(top: 24),
+      margin: const EdgeInsets.only(top: Dimens.xmMargin),
       child: ref.watch(partiesStreamProvider).when(
             data: (snapshot) {
               return _PartiesListContent(snapshot: snapshot);
@@ -92,7 +93,7 @@ class _PartiesListContent extends StatelessWidget {
         return ListTile(
           title: Text(
             id,
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: Dimens.xsFontSize),
           ),
           onTap: () {
             _showPartyPasswordDialog(context, id);

@@ -2,9 +2,10 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_call/common/extensions/context_extensions.dart';
+import 'package:shot_call/data/shared_prefs.dart';
 import 'package:shot_call/screens/home/call_button_provider.dart';
 import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
-import 'package:shot_call/data/shared_prefs.dart';
+import 'package:shot_call/styleguide/dimens.dart';
 import 'package:shot_call/utils/logger.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -64,7 +65,7 @@ class _CallTheShotsSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(Dimens.mMargin),
       child: ref.watch(callTheShotsButtonProvider).when(
         data: (data) {
           switch (data.status) {
@@ -136,32 +137,32 @@ class _ButtonView extends ConsumerWidget {
           textAlign: TextAlign.center,
           topText,
           style: const TextStyle(
-            fontSize: 36,
+            fontSize: Dimens.lFontSize,
           ),
         ),
         const SizedBox(
-          height: 24,
+          height: Dimens.xmMargin,
         ),
         Text(
           textAlign: TextAlign.center,
           bottomText,
           style: const TextStyle(
-            fontSize: 28,
+            fontSize: Dimens.mFontSize,
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: Dimens.xmMargin),
         AvatarGlow(
-          startDelay: const Duration(milliseconds: 1000),
+          startDelay: const Duration(milliseconds: Dimens.buttonPulseDuration),
           child: GestureDetector(
             onTap: onPressed,
             child: Material(
               shape: const CircleBorder(),
               color: color,
               child: Padding(
-                padding: const EdgeInsets.all(52),
+                padding: const EdgeInsets.all(Dimens.xlMargin),
                 child: CircleAvatar(
                   backgroundColor: color,
-                  radius: 120,
+                  radius: Dimens.buttonIconRadius,
                   child: Image.asset('assets/images/$imagePath.png'),
                 ),
               ),
@@ -170,6 +171,5 @@ class _ButtonView extends ConsumerWidget {
         ),
       ],
     );
-    ;
   }
 }

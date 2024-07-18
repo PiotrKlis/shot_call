@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/party_participants/party_participants_provider.dart';
+import 'package:shot_call/styleguide/dimens.dart';
 
 class PartyParticipantsScreen extends StatelessWidget {
   const PartyParticipantsScreen({required String partyId, super.key})
@@ -17,7 +18,7 @@ class PartyParticipantsScreen extends StatelessWidget {
       ),
       body: Container(
         margin: const EdgeInsets.all(
-          24,
+          Dimens.xmMargin,
         ),
         child: _ParticipantsList(_partyId),
       ),
@@ -34,7 +35,7 @@ class _ParticipantsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.only(top: 24),
+        margin: const EdgeInsets.only(top: Dimens.xmMargin),
         child: ref.watch(partyParticipantsStreamProvider(_partyId)).when(
               data: (participants) {
                 return ListView.separated(

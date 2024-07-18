@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shot_call/app_frame_with_nav_bar.dart';
+import 'package:shot_call/common/navigation/navigation_constants.dart';
+import 'package:shot_call/common/navigation/screen_navigation_key.dart';
 import 'package:shot_call/screens/account/account_screen.dart';
-import 'package:shot_call/screens/party_participants/party_participants_screen.dart';
+import 'package:shot_call/screens/app_frame_with_nav_bar.dart';
 import 'package:shot_call/screens/home/home_screen.dart';
 import 'package:shot_call/screens/parties/parties_screen.dart';
-import 'package:shot_call/utils/navigation_constants.dart';
-import 'package:shot_call/utils/screen_navigation_key.dart';
+import 'package:shot_call/screens/party_participants/party_participants_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeShellNavigatorKey = GlobalKey<NavigatorState>();

@@ -1,9 +1,10 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/home/call_button_provider.dart';
 import 'package:shot_call/screens/home/nickname_alert_dialog.dart';
-import 'package:shot_call/shared_prefs.dart';
+import 'package:shot_call/data/shared_prefs.dart';
 import 'package:shot_call/utils/logger.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -69,8 +70,8 @@ class _CallTheShotsSection extends ConsumerWidget {
           switch (data.status) {
             case CallButtonStatus.idle:
               return _ButtonView(
-                'Zaschło Ci w gardle i nie masz się z kim napić?',
-                'Wciśnij przycisk żeby wezwać posiłki!',
+                context.strings.idle_button_title,
+                context.strings.idle_button_subtitle,
                 Colors.orange,
                 'notification',
                 () {
@@ -79,16 +80,16 @@ class _CallTheShotsSection extends ConsumerWidget {
               );
             case CallButtonStatus.calling:
               return _ButtonView(
-                '${data.alarmer} potrzebuje pomocy!',
-                'Natychmiast rzuć wszytko co robisz i idź się z nim napić!',
+                context.strings.calling_button_title(data.alarmer ?? ''),
+                context.strings.idle_button_subtitle,
                 Colors.red,
                 'alarm',
                 null,
               );
             case CallButtonStatus.relieve:
               return _ButtonView(
-                'Nie lękaj się! Pomoc jest w drodze!',
-                'Kliknij żeby odwołać alarm.',
+                context.strings.relieve_button_title,
+                context.strings.relieve_button_subtitle,
                 Colors.green,
                 'relieved',
                 () {
@@ -96,12 +97,12 @@ class _CallTheShotsSection extends ConsumerWidget {
                 },
               );
             case CallButtonStatus.empty:
-              return const Text('Zapisz się na imprezę przegrywie');
+              return Text(context.strings.party_signup_suggestion);
           }
         },
         error: (error, stackTrace) {
           Logger.error(error, stackTrace);
-          return const Text('Zapisz się na imprezę przegrywie');
+          return Text(context.strings.party_signup_suggestion);
         },
         loading: () {
           return const Center(child: CircularProgressIndicator());

@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shot_call/screens/home/nickname_provider.dart';
-import 'package:shot_call/screens/home/party_name_provider.dart';
+import 'package:shot_call/common/providers/nickname_provider.dart';
+import 'package:shot_call/common/providers/party_name_provider.dart';
+import 'package:shot_call/data/firestore_constants.dart';
 
-part 'create_party_notifier.g.dart';
+part 'create_party_provider.g.dart';
 
 @riverpod
-class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
+class CreateParty extends _$CreateParty {
   @override
   AsyncValue<void> build() {
     return const AsyncValue.loading();
@@ -25,10 +26,13 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
   }
 
   Future<void> _createNewParty(String partyName, String password) async {
-    await FirebaseFirestore.instance.collection('parties').doc(partyName).set({
-      'alarm': '',
-      'password': password,
-      'participants': FieldValue.arrayUnion(
+    await FirebaseFirestore.instance
+        .collection(FirestoreConstants.parties)
+        .doc(partyName)
+        .set({
+      FirestoreConstants.alarm: FirestoreConstants.emptyValue,
+      FirestoreConstants.password: password,
+      FirestoreConstants.participants: FieldValue.arrayUnion(
         [ref.read(nicknameProvider)],
       ),
     });
@@ -47,27 +51,27 @@ class CreatePartyStateNotifier extends _$CreatePartyStateNotifier {
 
   Future<void> _removeAlarmer(String partyName) async {
     final party = await FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyName)
         .get();
 
     final nickname = ref.read(nicknameProvider);
-    final alarmer = party['alarm'] as String;
+    final alarmer = party[FirestoreConstants.alarm] as String;
 
     if (alarmer == nickname) {
       await FirebaseFirestore.instance
-          .collection('parties')
+          .collection(FirestoreConstants.parties)
           .doc(partyName)
-          .update({'alarm': ''});
+          .update({FirestoreConstants.alarm: FirestoreConstants.emptyValue});
     }
   }
 
   Future<void> _removeParticipant(String partyName) async {
     await FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyName)
         .update({
-      'participants': FieldValue.arrayRemove(
+      FirestoreConstants.participants: FieldValue.arrayRemove(
         [ref.read(nicknameProvider)],
       ),
     });

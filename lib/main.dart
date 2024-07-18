@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shot_call/local_notification_service.dart';
-import 'package:shot_call/shared_prefs.dart';
-import 'package:shot_call/utils/get_it.dart';
-import 'package:shot_call/utils/navigation_config.dart';
+import 'package:shot_call/common/dependency_injection/get_it.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
+import 'package:shot_call/common/navigation/navigation_config.dart';
+import 'package:shot_call/common/notifications/local_notification_service.dart';
+import 'package:shot_call/data/shared_prefs.dart';
 
 Future<void> main() async {
   await _handleBeforeAppStart();
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       routerConfig: goRouter,
-      title: 'Call the Shots',
+      title: context.strings.app_name,
       theme: FlexThemeData.dark(
         useMaterial3: true,
       ),

@@ -1,3 +1,37 @@
 {
-  "helloWorld": "Witaj świecie!"
+  "nickname": "Ksywa",
+  "party": "Impreza",
+  "idle_button_title": "Zaschło Ci w gardle i nie masz się z kim napić?",
+  "idle_button_subtitle": "Wciśnij przycisk żeby wezwać posiłki!",
+  "calling_button_title": "${alarmer} potrzebuje pomocy!",
+  "@calling_button_title": {
+    "placeholders": {
+      "alarmer": {
+        "type": "String"
+      }
+    }
+  },
+  "calling_button_subtitle": "Natychmiast rzuć wszytko co robisz i idź się z nim napić!",
+  "relieve_button_title": "Nie lękaj się! Pomoc jest w drodze!",
+  "relieve_button_subtitle": "Kliknij żeby odwołać alarm.",
+  "party_signup_suggestion": "Zapisz się na imprezę przegrywie",
+  "nickname_dialog_question": "Jaka ksywa wariacie",
+  "nickname_dialog_empty_error": "Ksywa nie może być pusta :|",
+  "nickname_dialog_confirm": "Jedziemy",
+  "party_creation_dialog_question" : "Jaka impreza wariacie",
+  "party_creation_dialog_confirm" : "Stwórz imprezę",
+  "password" : "Password",
+  "empty_password_error" : "Password cannot be empty :|",
+  "password_dialog_question" : "Jakie hasło wariacie",
+  "party_name" : "Nazwa imprezy",
+  "empty_party_name" : "Nazwa imprezy nie może być pusta :|",
+  "wrong_password" : "Błędne hasło!",
+  "ok" : "OK",
+  "create_party_or_join" : "Stwórz nową imprezę lub dołącz do istniejącej",
+  "party_members" : "Imprezowicze",
+  "app_name" : "Call the Shots",
+  "parties" : "Imprezy",
+  "user" : "Użytkownik",
+  "offline_info" : "Brak internetów :(",
+  "online_info" : "Internety wróciły :)"
 }

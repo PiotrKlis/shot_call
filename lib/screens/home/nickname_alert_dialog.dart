@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shot_call/screens/home/nickname_provider.dart';
-import 'package:shot_call/shared_prefs.dart';
-import 'package:shot_call/utils/screen_navigation_key.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
+import 'package:shot_call/common/navigation/screen_navigation_key.dart';
+import 'package:shot_call/common/providers/nickname_provider.dart';
 import 'package:shot_call/utils/text_field_validator.dart';
 
 class NicknameAlertDialog extends ConsumerWidget {
@@ -14,23 +14,23 @@ class NicknameAlertDialog extends ConsumerWidget {
     final formKey = GlobalKey<FormState>();
     final controller = TextEditingController();
     return AlertDialog(
-      title: const Center(child: Text('Jaka ksywa wariacie')),
+      title: Center(child: Text(context.strings.nickname_dialog_question)),
       content: Form(
         key: formKey,
         child: TextFormField(
-          decoration: const InputDecoration(
-            hintText: 'Ksywa',
+          decoration: InputDecoration(
+            hintText: context.strings.nickname,
           ),
           controller: controller,
           focusNode: FocusNode(),
           autofocus: true,
           validator: (value) => TextFieldValidator.validateIsEmpty(
-              value, 'Ksywa nie może być pusta :|'),
+              value, context.strings.nickname_dialog_empty_error),
         ),
       ),
       actions: [
         TextButton(
-          child: const Text('Jedziemy'),
+          child: Text(context.strings.nickname_dialog_confirm),
           onPressed: () {
             if (formKey.currentState!.validate()) {
               ref.read(nicknameProvider.notifier).update(controller.text);

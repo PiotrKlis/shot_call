@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shot_call/screens/home/nickname_provider.dart';
-import 'package:shot_call/screens/home/party_name_provider.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
+import 'package:shot_call/common/providers/nickname_provider.dart';
+import 'package:shot_call/common/providers/party_name_provider.dart';
 
 class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
@@ -14,13 +15,17 @@ class AccountScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Username',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Text(
+              context.strings.nickname,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(ref.read(nicknameProvider)),
-            const SizedBox(height: 16,),
-            const Text('Current party',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            const SizedBox(
+              height: 16,
+            ),
+            Text(
+              context.strings.party,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(ref.watch(partyNameProvider)),
           ],

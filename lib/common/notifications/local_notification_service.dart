@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shot_call/utils/get_it.dart';
 import 'package:shot_call/utils/logger.dart';
 
 @injectable
@@ -16,7 +15,6 @@ class NotificationsService {
 
   static Future<void> display(RemoteMessage message) async {
     try {
-      Logger.log('displaying message! $message');
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
@@ -35,7 +33,7 @@ class NotificationsService {
         payload: message.data['route'] as String?,
       );
     } catch (error, stacktrace) {
-      Logger.error('PKPK notification display failed!', stacktrace);
+      Logger.error('notification display failed!', stacktrace);
     }
   }
 
@@ -70,7 +68,7 @@ class NotificationsService {
     });
     // To handle when app is open in
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      Logger.log('PKPK notification received! onMessageOpenedApp $message');
+      Logger.log('notification received! onMessageOpenedApp $message');
       display(message);
     });
 
@@ -80,7 +78,6 @@ class NotificationsService {
 
 @pragma('vm:entry-point')
 Future<void> backgroundMessageHandler(RemoteMessage message) async {
-  // final service = getIt<NotificationsService>();
   Logger.log('backgroundMessageHandler $message');
   await NotificationsService.display(message);
 }

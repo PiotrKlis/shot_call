@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shot_call/utils/connection_status.dart';
-import 'package:shot_call/utils/extensions/context_extensions.dart';
+import 'package:shot_call/common/connection_status/connection_status.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
 
 class AppFrameWithNavBar extends ConsumerWidget {
   const AppFrameWithNavBar({
@@ -18,18 +18,18 @@ class AppFrameWithNavBar extends ConsumerWidget {
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            label: 'Call the Shots',
-            icon: Icon(Icons.local_drink),
+            label: context.strings.app_name,
+            icon: const Icon(Icons.local_drink),
           ),
           NavigationDestination(
-            label: 'Parties',
-            icon: Icon(Icons.meeting_room),
+            label: context.strings.parties,
+            icon: const Icon(Icons.meeting_room),
           ),
           NavigationDestination(
-            label: 'User',
-            icon: Icon(Icons.manage_accounts),
+            label: context.strings.user,
+            icon: const Icon(Icons.manage_accounts),
           ),
         ],
         onDestinationSelected: _goBranch,
@@ -50,11 +50,11 @@ class AppFrameWithNavBar extends ConsumerWidget {
       connectivityStatusProvider,
       (previous, next) {
         if (next == const AsyncData(ConnectivityStatus.offline)) {
-          context.showFailedSnackBar('No internet connection :(');
+          context.showFailedSnackBar(context.strings.offline_info);
           wasOffline = true;
         }
         if (wasOffline && next == const AsyncData(ConnectivityStatus.online)) {
-          context.showSuccessfulSnackBar('Internet connection is back :)');
+          context.showSuccessfulSnackBar(context.strings.online_info);
           wasOffline = false;
         }
       },

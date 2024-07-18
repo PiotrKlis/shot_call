@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/parties/create_party_dialog/create_party_dialog.dart';
 import 'package:shot_call/screens/parties/parties_provider.dart';
 import 'package:shot_call/screens/parties/party_password_dialog/party_password_dialog.dart';
@@ -42,14 +43,14 @@ class _PartiesScreenContent extends StatelessWidget {
       margin: const EdgeInsets.all(
         24,
       ),
-      child: const SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Column(
           children: [
             Text(
-              'Stwórz nową imprezę lub dołącz do istniejącej',
-              style: TextStyle(fontSize: 24),
+              context.strings.create_party_or_join,
+              style: const TextStyle(fontSize: 24),
             ),
-            _PartiesListConsumer(),
+            const _PartiesListConsumer(),
           ],
         ),
       ),

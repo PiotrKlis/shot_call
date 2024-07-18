@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shot_call/screens/home/nickname_provider.dart';
-import 'package:shot_call/screens/home/party_name_provider.dart';
+import 'package:shot_call/common/providers/nickname_provider.dart';
+import 'package:shot_call/common/providers/party_name_provider.dart';
+import 'package:shot_call/data/firestore_constants.dart';
 
 part 'call_button_provider.g.dart';
 
@@ -12,12 +13,12 @@ class CallTheShotsButton extends _$CallTheShotsButton {
     final partyName = ref.watch(partyNameProvider);
     final nickname = ref.read(nicknameProvider);
     yield* FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyName)
         .snapshots()
         .map((snapshot) {
       if (snapshot.exists) {
-        final alarmer = snapshot.data()?['alarm'] as String;
+        final alarmer = snapshot.data()?[FirestoreConstants.alarm] as String;
         if (alarmer == nickname) {
           return CallButtonState(CallButtonStatus.relieve, alarmer);
         } else if (alarmer.isNotEmpty) {
@@ -35,17 +36,17 @@ class CallTheShotsButton extends _$CallTheShotsButton {
     final partyName = ref.read(partyNameProvider);
     final nickname = ref.read(nicknameProvider);
     FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyName)
-        .update({'alarm': nickname});
+        .update({FirestoreConstants.alarm: nickname});
   }
 
   void relieve() {
     final partyName = ref.read(partyNameProvider);
     FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyName)
-        .update({'alarm': ''});
+        .update({FirestoreConstants.alarm: FirestoreConstants.emptyValue});
   }
 }
 

@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'should_show_error.dart';
+part of 'party_password_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$shouldShowErrorHash() => r'834a943c54e918da84e486d74848dbc28a4cc9f2';
+String _$partyPasswordHash() => r'4e27938dda2bc40af28f2a7fb2fcdf7a65a3e6c4';
 
-/// See also [ShouldShowError].
-@ProviderFor(ShouldShowError)
-final shouldShowErrorProvider =
-    AutoDisposeNotifierProvider<ShouldShowError, bool>.internal(
-  ShouldShowError.new,
-  name: r'shouldShowErrorProvider',
+/// See also [PartyPassword].
+@ProviderFor(PartyPassword)
+final partyPasswordProvider =
+    AutoDisposeNotifierProvider<PartyPassword, AsyncValue<void>>.internal(
+  PartyPassword.new,
+  name: r'partyPasswordProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$shouldShowErrorHash,
+      : _$partyPasswordHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ShouldShowError = AutoDisposeNotifier<bool>;
+typedef _$PartyPassword = AutoDisposeNotifier<AsyncValue<void>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

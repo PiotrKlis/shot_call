@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/party_participants/party_participants_provider.dart';
 
 class PartyParticipantsScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class PartyParticipantsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Imprezowicze'),
+        title: Text(context.strings.party_members),
       ),
       body: Container(
         margin: const EdgeInsets.all(

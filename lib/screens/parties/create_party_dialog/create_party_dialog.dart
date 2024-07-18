@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shot_call/screens/parties/create_party_dialog/create_party_notifier.dart';
+import 'package:shot_call/common/extensions/context_extensions.dart';
+import 'package:shot_call/screens/parties/create_party_dialog/create_party_provider.dart';
 import 'package:shot_call/utils/text_field_validator.dart';
 
 class CreatePartyDialog extends ConsumerWidget {
@@ -12,10 +13,8 @@ class CreatePartyDialog extends ConsumerWidget {
     final formKey = GlobalKey<FormState>();
     final partyNameController = TextEditingController();
     final passwordController = TextEditingController();
-    final createPartyNotifier =
-        ref.read(createPartyStateNotifierProvider.notifier);
     ref.listen(
-      createPartyStateNotifierProvider,
+      createPartyProvider,
       (previous, next) {
         if (next == const AsyncData<void>(null)) {
           context.pop();
@@ -23,7 +22,8 @@ class CreatePartyDialog extends ConsumerWidget {
       },
     );
     return AlertDialog(
-      title: const Center(child: Text('Jaka impreza wariacie')),
+      title:
+          Center(child: Text(context.strings.party_creation_dialog_question)),
       content: Form(
         key: formKey,
         child: Column(
@@ -36,13 +36,13 @@ class CreatePartyDialog extends ConsumerWidget {
       ),
       actions: [
         TextButton(
-          child: const Text('Stwórz imprezę'),
+          child: Text(context.strings.party_creation_dialog_confirm),
           onPressed: () async {
             if (formKey.currentState!.validate()) {
-              await createPartyNotifier.createParty(
-                partyNameController.text,
-                passwordController.text,
-              );
+              await ref.read(createPartyProvider.notifier).createParty(
+                    partyNameController.text,
+                    passwordController.text,
+                  );
             }
           },
         ),
@@ -61,15 +61,15 @@ class _PartyPasswordTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: const InputDecoration(
-        hintText: 'Hasło',
+      decoration: InputDecoration(
+        hintText: context.strings.password,
       ),
       controller: passwordController,
       focusNode: FocusNode(),
       autofocus: true,
       validator: (value) => TextFieldValidator.validateIsEmpty(
         value,
-        'Hasło nie może być puste :|',
+        context.strings.empty_password_error,
       ),
     );
   }
@@ -85,15 +85,15 @@ class _PartyNameTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: const InputDecoration(
-        hintText: 'Nazwa imprezy',
+      decoration: InputDecoration(
+        hintText: context.strings.party_name,
       ),
       controller: partyNameController,
       focusNode: FocusNode(),
       autofocus: true,
       validator: (value) => TextFieldValidator.validateIsEmpty(
         value,
-        'Nazwa imprezy nie może być pusta :|',
+        context.strings.empty_party_name,
       ),
     );
   }

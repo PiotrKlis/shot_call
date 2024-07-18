@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shot_call/screens/home/nickname_provider.dart';
-import 'package:shot_call/screens/home/party_name_provider.dart';
-import 'package:shot_call/utils/should_show_error.dart';
+import 'package:shot_call/common/providers/nickname_provider.dart';
+import 'package:shot_call/common/providers/party_name_provider.dart';
+import 'package:shot_call/common/providers/should_show_error_provider.dart';
+import 'package:shot_call/data/firestore_constants.dart';
 
-part 'party_password_notifier.g.dart';
+part 'party_password_provider.g.dart';
 
 @riverpod
-class PartyPasswordNotifier extends _$PartyPasswordNotifier {
+class PartyPassword extends _$PartyPassword {
   @override
   AsyncValue<void> build() {
     return const AsyncValue.loading();
@@ -20,7 +21,7 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
   }) async {
     try {
       final party = await _getPartyData(partyName);
-      final isPasswordCorrect = party['password'] == password;
+      final isPasswordCorrect = party[FirestoreConstants.password] == password;
       if (isPasswordCorrect) {
         await _handleCorrectPassword(partyName);
       } else {
@@ -45,8 +46,8 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
   }
 
   Future<void> _addUserToParty(String partyId) async {
-    await FirebaseFirestore.instance.collection('parties').doc(partyId).update({
-      'participants': FieldValue.arrayUnion(
+    await FirebaseFirestore.instance.collection(FirestoreConstants.parties).doc(partyId).update({
+      FirestoreConstants.participants: FieldValue.arrayUnion(
         [ref.read(nicknameProvider)],
       ),
     });
@@ -56,7 +57,7 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
     String partyId,
   ) async {
     final party = await FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyId)
         .get();
     return party;
@@ -74,27 +75,27 @@ class PartyPasswordNotifier extends _$PartyPasswordNotifier {
 
   Future<void> _removeAlarmer(String partyName) async {
     final party = await FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyName)
         .get();
 
     final nickname = ref.read(nicknameProvider);
-    final alarmer = party['alarm'] as String;
+    final alarmer = party[FirestoreConstants.alarm] as String;
 
     if (alarmer == nickname) {
       await FirebaseFirestore.instance
-          .collection('parties')
+          .collection(FirestoreConstants.parties)
           .doc(partyName)
-          .update({'alarm': ''});
+          .update({FirestoreConstants.alarm: FirestoreConstants.emptyValue});
     }
   }
 
   Future<void> _removeParticipant(String partyName) async {
     await FirebaseFirestore.instance
-        .collection('parties')
+        .collection(FirestoreConstants.parties)
         .doc(partyName)
         .update({
-      'participants': FieldValue.arrayRemove(
+      FirestoreConstants.participants: FieldValue.arrayRemove(
         [ref.read(nicknameProvider)],
       ),
     });

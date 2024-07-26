@@ -4,10 +4,10 @@ First app open
  - Pojawia się za każdym razem przy otwarciu apki jeżeli nie ma permission
 
 2. Nickname dialog
-  - Non-dismissable dialog
-  - Non empty nickname
-  - Odpala się po zabiciu apki
-  - Nickname nie moze byc spacjami i Max liczba chars nickname
+  - Non-dismissable dialog ✅
+  - Non empty nickname ✅
+  - Odpala się po zabiciu apki ✅
+  - Nickname nie moze byc spacjami i Max liczba chars nickname ✅
 
 Parties screen
 

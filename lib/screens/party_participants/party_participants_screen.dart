@@ -4,14 +4,14 @@ import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/party_participants/party_participants_provider.dart';
 import 'package:shot_call/styleguide/dimens.dart';
 
-class PartyParticipantsScreen extends StatelessWidget {
+class PartyParticipantsScreen extends ConsumerWidget {
   const PartyParticipantsScreen({required String partyId, super.key})
       : _partyId = partyId;
 
   final String _partyId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.party_members),
@@ -21,6 +21,12 @@ class PartyParticipantsScreen extends StatelessWidget {
           Dimens.xmMargin,
         ),
         child: _ParticipantsList(_partyId),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ref.read(partyParticipantsProvider.notifier).removeParticipant();
+        },
+        child: const Icon(Icons.door_back_door),
       ),
     );
   }
@@ -36,7 +42,7 @@ class _ParticipantsList extends ConsumerWidget {
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.only(top: Dimens.xmMargin),
-        child: ref.watch(partyParticipantsStreamProvider(_partyId)).when(
+        child: ref.watch(partyParticipantsProvider).when(
               data: (participants) {
                 return ListView.separated(
                   shrinkWrap: true,

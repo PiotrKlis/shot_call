@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/common/navigation/screen_navigation_key.dart';
 import 'package:shot_call/common/providers/nickname_provider.dart';
+import 'package:shot_call/styleguide/dimens.dart';
 import 'package:shot_call/utils/text_field_validator.dart';
 
 class NicknameAlertDialog extends ConsumerWidget {
@@ -18,13 +19,14 @@ class NicknameAlertDialog extends ConsumerWidget {
       content: Form(
         key: formKey,
         child: TextFormField(
+          maxLength: Dimens.maxChars,
           decoration: InputDecoration(
             hintText: context.strings.nickname,
           ),
           controller: controller,
           focusNode: FocusNode(),
           autofocus: true,
-          validator: (value) => TextFieldValidator.validateIsEmpty(
+          validator: (value) => TextFieldValidator.validate(
               value, context.strings.nickname_dialog_empty_error),
         ),
       ),

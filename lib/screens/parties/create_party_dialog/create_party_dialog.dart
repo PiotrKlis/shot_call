@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/parties/create_party_dialog/create_party_provider.dart';
+import 'package:shot_call/styleguide/dimens.dart';
 import 'package:shot_call/utils/text_field_validator.dart';
 
 class CreatePartyDialog extends ConsumerWidget {
@@ -61,13 +62,14 @@ class _PartyPasswordTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength: Dimens.maxChars,
       decoration: InputDecoration(
         hintText: context.strings.password,
       ),
       controller: passwordController,
       focusNode: FocusNode(),
       autofocus: true,
-      validator: (value) => TextFieldValidator.validateIsEmpty(
+      validator: (value) => TextFieldValidator.validate(
         value,
         context.strings.empty_password_error,
       ),
@@ -85,13 +87,14 @@ class _PartyNameTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength: Dimens.maxChars,
       decoration: InputDecoration(
         hintText: context.strings.party_name,
       ),
       controller: partyNameController,
       focusNode: FocusNode(),
       autofocus: true,
-      validator: (value) => TextFieldValidator.validateIsEmpty(
+      validator: (value) => TextFieldValidator.validate(
         value,
         context.strings.empty_party_name,
       ),

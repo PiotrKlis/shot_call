@@ -82,7 +82,7 @@ class _CallTheShotsSection extends ConsumerWidget {
             case CallButtonStatus.calling:
               return _ButtonView(
                 context.strings.calling_button_title(data.alarmer ?? ''),
-                context.strings.idle_button_subtitle,
+                context.strings.calling_button_subtitle,
                 Colors.red,
                 'alarm',
                 null,
@@ -103,7 +103,8 @@ class _CallTheShotsSection extends ConsumerWidget {
         },
         error: (error, stackTrace) {
           Logger.error(error, stackTrace);
-          return Text(context.strings.party_signup_suggestion);
+          // return Text(context.strings.party_signup_suggestion);
+          return Text('Zapisz się na imprezę przegrywie');
         },
         loading: () {
           return const Center(child: CircularProgressIndicator());

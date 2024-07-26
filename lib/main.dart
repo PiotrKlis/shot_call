@@ -1,12 +1,11 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shot_call/common/dependency_injection/get_it.dart';
-import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/common/navigation/navigation_config.dart';
 import 'package:shot_call/common/notifications/local_notification_service.dart';
 import 'package:shot_call/data/shared_prefs.dart';
@@ -34,8 +33,8 @@ void _initializeNotificationsListeners() {
 }
 
 Future<void> _askForNotificationPermissions() async {
-  await Permission.notification.isDenied.then((isDenied) {
-    if (isDenied) {
+  await Permission.notification.isGranted.then((isGranted) {
+    if (!isGranted) {
       Permission.notification.request();
     }
   });
@@ -52,7 +51,11 @@ class MyApp extends StatelessWidget {
     // return DevicePreview(
     //   builder: (BuildContext context) {
     return MaterialApp.router(
+      // useInheritedMediaQuery: true,
+      // locale: DevicePreview.locale(context),
+      // builder: DevicePreview.appBuilder,
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -61,11 +64,8 @@ class MyApp extends StatelessWidget {
         Locale('pl'),
         Locale('en'),
       ],
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
       routerConfig: goRouter,
-      title: context.strings.app_name,
+      title: 'Call the Shots',
       theme: FlexThemeData.dark(
         useMaterial3: true,
       ),

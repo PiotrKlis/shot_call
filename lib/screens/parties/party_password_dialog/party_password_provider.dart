@@ -38,6 +38,15 @@ class PartyPassword extends _$PartyPassword {
   }
 
   Future<void> _handleCorrectPassword(String partyName) async {
+    final isUserAlreadyInParty = partyName == ref.read(partyNameProvider);
+    if (isUserAlreadyInParty) {
+      state = const AsyncValue.data(null);
+    } else {
+      await _handleNewPartyParticipant(partyName);
+    }
+  }
+
+  Future<void> _handleNewPartyParticipant(String partyName) async {
     await _addUserToParty(partyName);
     await _removeDataFromOtherParties();
     await FirebaseMessaging.instance.subscribeToTopic(partyName);
@@ -46,7 +55,10 @@ class PartyPassword extends _$PartyPassword {
   }
 
   Future<void> _addUserToParty(String partyId) async {
-    await FirebaseFirestore.instance.collection(FirestoreConstants.parties).doc(partyId).update({
+    await FirebaseFirestore.instance
+        .collection(FirestoreConstants.parties)
+        .doc(partyId)
+        .update({
       FirestoreConstants.participants: FieldValue.arrayUnion(
         [ref.read(nicknameProvider)],
       ),

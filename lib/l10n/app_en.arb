@@ -3,7 +3,7 @@
   "party": "Party",
   "idle_button_title": "Thirsty and no one to drink with?",
   "idle_button_subtitle": "Click the button to call for backup!",
-  "calling_button_title": "${alarmer} need help!",
+  "calling_button_title": "{alarmer} needs help!",
   "@calling_button_title": {
     "placeholders": {
       "alarmer": {
@@ -11,7 +11,7 @@
       }
     }
   },
-  "calling_button_subtitle": "Drop everything you do and run to have a drink with him!",
+  "calling_button_subtitle": "Drop everything and run to have a drink with him!",
   "relieve_button_title": "Do not fear, help is on its way!",
   "relieve_button_subtitle": "Click to cancel the alarm.",
   "party_signup_suggestion": "Go find yourself a party, loser",
@@ -33,5 +33,6 @@
   "parties" : "Parties",
   "user" : "User",
   "offline_info" : "No internet connection :(",
-  "online_info" : "Internet connection is back :)"
+  "online_info" : "Internet connection is back :)",
+  "notifications" : "Notifications"
 }

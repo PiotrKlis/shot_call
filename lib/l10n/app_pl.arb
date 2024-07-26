@@ -33,5 +33,6 @@
   "parties" : "Imprezy",
   "user" : "Użytkownik",
   "offline_info" : "Brak internetów :(",
-  "online_info" : "Internety wróciły :)"
+  "online_info" : "Internety wróciły :)",
+  "notifications" : "Notyfikacje"
 }

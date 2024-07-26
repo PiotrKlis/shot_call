@@ -1,5 +1,5 @@
 class TextFieldValidator {
-  static String? validateIsEmpty(String? value, String errorMessage) {
+  static String? validate(String? value, String errorMessage) {
     value?.trim();
     if (value != null && value.isEmpty) {
       return errorMessage;

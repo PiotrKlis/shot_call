@@ -6,7 +6,7 @@ part of 'party_password_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$partyPasswordHash() => r'4e27938dda2bc40af28f2a7fb2fcdf7a65a3e6c4';
+String _$partyPasswordHash() => r'fa1a10eed6f10c567f0188c9cf90c9c915cc42c6';
 
 /// See also [PartyPassword].
 @ProviderFor(PartyPassword)

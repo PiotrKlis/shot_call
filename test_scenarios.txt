@@ -1,20 +1,20 @@
 First app open
 
 1. Notification permission
- - Pojawia się za każdym razem przy otwarciu apki jeżeli nie ma permission ✅
+ - Pojawia się za każdym razem przy otwarciu apki jeżeli nie ma permission
 
 2. Nickname dialog
-  - Non-dismissable dialog ✅
-  - Non empty nickname ✅
-  - Odpala się po zabiciu apki ✅
-  - Nickname nie moze byc spacjami i Max liczba chars nickname  // Do Dodania
+  - Non-dismissable dialog
+  - Non empty nickname
+  - Odpala się po zabiciu apki
+  - Nickname nie moze byc spacjami i Max liczba chars nickname
 
 Parties screen
 
 1. New party dialog
   - Dismissable dialog
-  - Nazwa imprezy nie może być spacjami i max liczba chars // Do dodania
-  - Hasło nie może byc spacjami i max licza chars // Do dodania
+  - Nazwa imprezy nie może być spacjami i max liczba chars
+  - Hasło nie może byc spacjami i max licza chars
   - Stworzenie imprezy czysci dane ze starej imprezy, jeśli była
   - Stworzenie imprezy dodaje uzytkownika do tej imprezy
   - Stworzenie imprezy nawiguje do widoku imprezowicze

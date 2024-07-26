@@ -32,9 +32,7 @@ class CreateParty extends _$CreateParty {
         .set({
       FirestoreConstants.alarm: FirestoreConstants.emptyValue,
       FirestoreConstants.password: password,
-      FirestoreConstants.participants: FieldValue.arrayUnion(
-        [ref.read(nicknameProvider)],
-      ),
+      FirestoreConstants.participants: [ref.read(nicknameProvider)],
     });
     ref.read(partyNameProvider.notifier).update(partyName);
   }
@@ -55,25 +53,40 @@ class CreateParty extends _$CreateParty {
         .doc(partyName)
         .get();
 
-    final nickname = ref.read(nicknameProvider);
-    final alarmer = party[FirestoreConstants.alarm] as String;
-
-    if (alarmer == nickname) {
-      await FirebaseFirestore.instance
-          .collection(FirestoreConstants.parties)
-          .doc(partyName)
-          .update({FirestoreConstants.alarm: FirestoreConstants.emptyValue});
+    final isAlarmPresent = party.data()?.containsKey(FirestoreConstants.alarm);
+    if (isAlarmPresent != null && isAlarmPresent) {
+      final alarmer = party[FirestoreConstants.alarm] as String;
+      final nickname = ref.read(nicknameProvider);
+      if (alarmer == nickname) {
+        await FirebaseFirestore.instance
+            .collection(FirestoreConstants.parties)
+            .doc(partyName)
+            .update({FirestoreConstants.alarm: FirestoreConstants.emptyValue});
+      }
     }
   }
 
   Future<void> _removeParticipant(String partyName) async {
-    await FirebaseFirestore.instance
+    final party = await FirebaseFirestore.instance
         .collection(FirestoreConstants.parties)
         .doc(partyName)
-        .update({
-      FirestoreConstants.participants: FieldValue.arrayRemove(
-        [ref.read(nicknameProvider)],
-      ),
-    });
+        .get();
+
+    final areParticipantsPresent =
+        party.data()?.containsKey(FirestoreConstants.participants);
+    if (areParticipantsPresent != null && areParticipantsPresent) {
+      final participants = (party[FirestoreConstants.participants] as List)
+          .map((item) => item.toString())
+          .toList();
+      final nickname = ref.read(nicknameProvider);
+      if (participants.contains(nickname)) {
+        await FirebaseFirestore.instance
+            .collection(FirestoreConstants.parties)
+            .doc(partyName)
+            .update({
+          FirestoreConstants.participants: FieldValue.arrayRemove([nickname]),
+        });
+      }
+    }
   }
 }

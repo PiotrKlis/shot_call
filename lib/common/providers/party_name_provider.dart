@@ -17,4 +17,9 @@ class PartyName extends _$PartyName {
     sharedPreferences.setString(SharedPrefs.keyPartyName, partyName);
     state = partyName;
   }
+
+  void clear() {
+    sharedPreferences.remove(SharedPrefs.keyPartyName);
+    state = _defaultValue;
+  }
 }

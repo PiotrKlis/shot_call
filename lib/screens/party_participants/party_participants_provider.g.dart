@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'call_button_provider.dart';
+part of 'party_participants_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$callTheShotsButtonHash() =>
-    r'61fbee610135420f48f6dd6c02e1b0cdce7759de';
+String _$partyParticipantsHash() => r'5ed66c01f0c333bb8f0eb595c31c41eb1406044f';
 
-/// See also [CallTheShotsButton].
-@ProviderFor(CallTheShotsButton)
-final callTheShotsButtonProvider = AutoDisposeStreamNotifierProvider<
-    CallTheShotsButton, CallButtonState>.internal(
-  CallTheShotsButton.new,
-  name: r'callTheShotsButtonProvider',
+/// See also [PartyParticipants].
+@ProviderFor(PartyParticipants)
+final partyParticipantsProvider =
+    AutoDisposeStreamNotifierProvider<PartyParticipants, List<String>>.internal(
+  PartyParticipants.new,
+  name: r'partyParticipantsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$callTheShotsButtonHash,
+      : _$partyParticipantsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CallTheShotsButton = AutoDisposeStreamNotifier<CallButtonState>;
+typedef _$PartyParticipants = AutoDisposeStreamNotifier<List<String>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

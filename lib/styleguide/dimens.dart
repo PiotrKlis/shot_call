@@ -13,4 +13,6 @@ class Dimens {
 
   static const int buttonPulseDuration = 1000;
   static const double buttonIconRadius = 120;
+
+  static const int maxChars = 24;
 }

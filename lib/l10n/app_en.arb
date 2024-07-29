@@ -34,5 +34,6 @@
   "user" : "User",
   "offline_info" : "No internet connection :(",
   "online_info" : "Internet connection is back :)",
-  "notifications" : "Notifications"
+  "notifications" : "Notifications",
+  "party_already_exists" : "Party with this name already exists :/"
 }

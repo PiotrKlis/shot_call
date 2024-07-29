@@ -12,29 +12,30 @@ First app open
 Parties screen
 
 1. New party dialog
-  - Dismissable dialog
-  - Nazwa imprezy nie może być spacjami i max liczba chars
-  - Hasło nie może byc spacjami i max licza chars
-  - Stworzenie imprezy czysci dane ze starej imprezy, jeśli była
-  - Stworzenie imprezy dodaje uzytkownika do tej imprezy
-  - Stworzenie imprezy nawiguje do widoku imprezowicze
+  - Dismissable dialog ✅
+  - Nazwa imprezy nie może być spacjami i max liczba chars ✅
+  - Hasło nie może byc spacjami i max licza chars ✅
+  - Stworzenie imprezy czysci dane ze starej imprezy, jeśli była ✅
+  - Stworzenie imprezy dodaje uzytkownika do tej imprezy ✅
+  - Stworzenie imprezy nawiguje do widoku imprezowicze ✅
 
 2. Join party dialog
-  - Dismissable
-  - Dołączenie do imprezy czysci dane ze starej imprezy, jesli była
-  - Dołączenie do imprezy dodaje uzytkownika do tej imprezy
-  - Dołączenie do imprezy nawiguje do widoku imprezowicze
+  - Dismissable ✅
+  - Dołączenie do imprezy czysci dane ze starej imprezy, jesli była ✅
+  - Dołączenie do imprezy dodaje uzytkownika do tej imprezy ✅
+  - Dołączenie do imprezy nawiguje do widoku imprezowicze ✅
 
-3. Klik na nazwę imprezy nawiguje do widoku imprezowicze
-4. Aktualizuje na bieżąco listę imprez
-5. Jeżeli nie ma żadnej imprezy, pokaż napis że nie ma imprez
-6. Dołączenie do imprezy, wyjście, dołączenie do innej imprezy, stworzenie imprezy itd.
-7. Stworznei imprezie, wyjście, dołączenie do imprezy, stworzenie, dołączenie itd.
+3. Klik na nazwę imprezy nawiguje do widoku imprezowicze ✅
+4. Aktualizuje na bieżąco listę imprez ✅
+5. Dołączenie do imprezy, wyjście, dołączenie do innej imprezy, stworzenie imprezy itd.  ✅
+6. Stworznei imprezie, wyjście, dołączenie do imprezy, stworzenie, dołączenie itd. ✅
+7. Nie mozna stworzyc dwoch imprez o tej samej nazwie
 
 Imprezowicze screen
 
-1. Pokazuje imprezowiczów
-2. Aktualizacje na biężąco listę imprezowiczów
+1. Pokazuje imprezowiczów ✅
+2. Aktualizacje na biężąco listę imprezowiczów ✅
+3. Wyjście z imprezy ✅
 
 User screen
 

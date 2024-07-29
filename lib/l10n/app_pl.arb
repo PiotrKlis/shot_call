@@ -34,5 +34,6 @@
   "user" : "Użytkownik",
   "offline_info" : "Brak internetów :(",
   "online_info" : "Internety wróciły :)",
-  "notifications" : "Notyfikacje"
+  "notifications" : "Notyfikacje",
+  "party_already_exists" : "Impreza o tej nazwie już istnieje"
 }

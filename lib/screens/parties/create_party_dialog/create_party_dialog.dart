@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shot_call/common/extensions/context_extensions.dart';
+import 'package:shot_call/common/providers/should_show_error_provider.dart';
 import 'package:shot_call/screens/parties/create_party_dialog/create_party_provider.dart';
 import 'package:shot_call/styleguide/dimens.dart';
 import 'package:shot_call/utils/text_field_validator.dart';
@@ -32,6 +33,13 @@ class CreatePartyDialog extends ConsumerWidget {
           children: [
             _PartyNameTextField(partyNameController: partyNameController),
             _PartyPasswordTextField(passwordController: passwordController),
+            Visibility(
+              visible: ref.watch(shouldShowErrorProvider),
+              child: Text(
+                context.strings.party_already_exists,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
           ],
         ),
       ),

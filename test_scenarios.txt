@@ -29,7 +29,7 @@ Parties screen
 4. Aktualizuje na bieżąco listę imprez ✅
 5. Dołączenie do imprezy, wyjście, dołączenie do innej imprezy, stworzenie imprezy itd.  ✅
 6. Stworznei imprezie, wyjście, dołączenie do imprezy, stworzenie, dołączenie itd. ✅
-7. Nie mozna stworzyc dwoch imprez o tej samej nazwie
+7. Nie mozna stworzyc dwoch imprez o tej samej nazwie ✅
 
 Imprezowicze screen
 
@@ -39,22 +39,22 @@ Imprezowicze screen
 
 User screen
 
-1. Username
-2. Current party
-3. Notification switch // Do dodania
+1. Username ✅
+2. Current party ✅
+3. Notification switch ✅
 
 Call the shots
 
 1. Idle button
-  - Klik zmienia stan na relieve u klikającego, na calling u innych
-  - Wysyła notyfikacje (foreground, background, killed).
-  - Klik na notyfikację otwiera apkę i nawiguje do ekranu call the shots
+  - Klik zmienia stan na relieve u klikającego, na calling u innych ✅
+  - Wysyła notyfikacje (foreground, background, killed). ✅
+  - Klik na notyfikację otwiera apkę i nawiguje do ekranu call the shots ✅
 
 2. Relieve button
-  - Klik zmienia stan na idle u wszystkich
+  - Klik zmienia stan na idle u wszystkich ✅
 
 3. Calling
-  - Nic się nie da zrobić, button informacyjny
+  - Nic się nie da zrobić, button informacyjny ✅
 
 Connection status
  - Dodaj

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -25,10 +27,19 @@ class NotificationsService {
           priority: Priority.max,
         ),
       );
+      final alarmer = message.notification?.title;
+      final defaultLocale = Platform.localeName;
+      final title = (defaultLocale.contains('en'))
+          ? '$alarmer needs backup!'
+          : '$alarmer potrzebuje wsparcia!';
+      final body = (defaultLocale.contains('en'))
+          ? 'Immediately run to have a drink with him!'
+          : 'Natychmiast rzuć wszystko i biegnij się napić!';
+
       await _notificationsPlugin.show(
         id,
-        message.notification?.title,
-        message.notification?.body,
+        title,
+        body,
         notificationDetails,
         payload: message.data['route'] as String?,
       );

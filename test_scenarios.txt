@@ -1,7 +1,7 @@
 First app open
 
 1. Notification permission
- - Pojawia się za każdym razem przy otwarciu apki jeżeli nie ma permission
+ - Pojawia się wtedy kiedy powinno ✅
 
 2. Nickname dialog
   - Non-dismissable dialog ✅
@@ -57,4 +57,4 @@ Call the shots
   - Nic się nie da zrobić, button informacyjny ✅
 
 Connection status
- - Dodaj
+ - Dodaj  ✅

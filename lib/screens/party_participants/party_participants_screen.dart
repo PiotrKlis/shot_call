@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/screens/party_participants/party_participants_provider.dart';
 import 'package:shot_call/styleguide/dimens.dart';
 
 class PartyParticipantsScreen extends ConsumerWidget {
-  const PartyParticipantsScreen({required String partyId, super.key})
-      : _partyId = partyId;
-
-  final String _partyId;
+  const PartyParticipantsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,11 +18,12 @@ class PartyParticipantsScreen extends ConsumerWidget {
         margin: const EdgeInsets.all(
           Dimens.xmMargin,
         ),
-        child: _ParticipantsList(_partyId),
+        child: const _ParticipantsList(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.read(partyParticipantsProvider.notifier).removeParticipant();
+          context.pop();
         },
         child: const Icon(Icons.door_back_door),
       ),
@@ -33,9 +32,7 @@ class PartyParticipantsScreen extends ConsumerWidget {
 }
 
 class _ParticipantsList extends ConsumerWidget {
-  const _ParticipantsList(this._partyId);
-
-  final String _partyId;
+  const _ParticipantsList();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,6 +42,7 @@ class _ParticipantsList extends ConsumerWidget {
         child: ref.watch(partyParticipantsProvider).when(
               data: (participants) {
                 return ListView.separated(
+                  primary: false,
                   shrinkWrap: true,
                   separatorBuilder: (context, index) => const Divider(),
                   itemCount: participants.length,

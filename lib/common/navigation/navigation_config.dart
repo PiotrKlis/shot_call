@@ -55,11 +55,8 @@ final goRouter = GoRouter(
                       '${ScreenNavigationKey.parties}/${ScreenNavigationKey.partyMembers}/:${NavigationConstants.partyId}',
                   // Correctly include path parameter
                   pageBuilder: (BuildContext context, GoRouterState state) {
-                    return NoTransitionPage(
-                      child: PartyParticipantsScreen(
-                        partyId:
-                            state.pathParameters[NavigationConstants.partyId]!,
-                      ),
+                    return const NoTransitionPage(
+                      child: PartyParticipantsScreen(),
                     );
                   },
                 ),

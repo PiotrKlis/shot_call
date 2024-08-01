@@ -85,6 +85,7 @@ class _PartiesListContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      primary: false,
       shrinkWrap: true,
       separatorBuilder: (context, index) => const Divider(),
       itemCount: snapshot.docs.length,

@@ -3,7 +3,7 @@
   "party": "Impreza",
   "idle_button_title": "Zaschło Ci w gardle i nie masz się z kim napić?",
   "idle_button_subtitle": "Wciśnij przycisk żeby wezwać posiłki!",
-  "calling_button_title": "${alarmer} potrzebuje pomocy!",
+  "calling_button_title": "{alarmer} potrzebuje pomocy!",
   "@calling_button_title": {
     "placeholders": {
       "alarmer": {

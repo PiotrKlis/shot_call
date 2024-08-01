@@ -50,7 +50,7 @@ class NotificationsService {
 
   void _initializePlugin() {
     const initializationSettingsAndroid = InitializationSettings(
-      android: AndroidInitializationSettings('@drawable/ic_launcher.png'),
+      android: AndroidInitializationSettings('@drawable/ic_launcher'),
       iOS: DarwinInitializationSettings(),
     );
 

@@ -19,6 +19,7 @@ class NotificationsService {
     try {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const notificationDetails = NotificationDetails(
+        iOS: DarwinNotificationDetails(),
         android: AndroidNotificationDetails(
           'channelId',
           'channelName',
@@ -49,15 +50,31 @@ class NotificationsService {
   }
 
   void _initializePlugin() {
-    const initializationSettingsAndroid = InitializationSettings(
-      android: AndroidInitializationSettings('@drawable/ic_launcher'),
-      iOS: DarwinInitializationSettings(),
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('@drawable/ic_launcher');
+    final initializationSettingsIOS = DarwinInitializationSettings(
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    );
+    final initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
     );
 
     _notificationsPlugin.initialize(
-      initializationSettingsAndroid,
+      initializationSettings,
       onDidReceiveBackgroundNotificationResponse:
           _onDidReceiveBackgroundNotificationResponse,
+    );
+  }
+
+  Future<void> onDidReceiveLocalNotification(
+    int id,
+    String? title,
+    String? body,
+    String? payload,
+  ) async {
+    await display(
+      RemoteMessage(notification: RemoteNotification(title: title)),
     );
   }
 
@@ -94,9 +111,9 @@ Future<void> backgroundMessageHandler(RemoteMessage message) async {
 }
 
 void _onDidReceiveBackgroundNotificationResponse(
-    NotificationResponse response) {
+  NotificationResponse response,
+) {
   Logger.log('onDidReceiveNotificationResponse $response');
-
   if (response.input != null) {
     Logger.log('onDidReceiveNotificationResponse input != null');
   }

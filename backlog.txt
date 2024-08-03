@@ -1,6 +1,5 @@
 - test na ajfonie małym i dużym preview
   - notyfikacje nie działają na iOS
   - apka nie chciała się odpalić na androidzie
-  - coś jest nie tak z zapisywaniem się na imprezę, user niby jest zapisany ale nie jest na liście
 - assembleRelease na bitrajzie, wysyłka do google play i appStore
 - switch notyfikacji nie dziala na ajfonie

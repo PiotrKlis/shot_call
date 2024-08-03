@@ -65,7 +65,12 @@ class _CallTheShotsSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: const EdgeInsets.all(Dimens.mMargin),
+      margin: const EdgeInsets.only(
+        top: Dimens.lMargin,
+        left: Dimens.mMargin,
+        right: Dimens.mMargin,
+        bottom: Dimens.mMargin,
+      ),
       child: ref.watch(callTheShotsButtonProvider).when(
         data: (data) {
           switch (data.status) {

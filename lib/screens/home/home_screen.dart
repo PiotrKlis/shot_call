@@ -66,7 +66,7 @@ class _CallTheShotsSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: const EdgeInsets.only(
-        top: Dimens.lMargin,
+        top: Dimens.mMargin,
         left: Dimens.mMargin,
         right: Dimens.mMargin,
         bottom: Dimens.mMargin,

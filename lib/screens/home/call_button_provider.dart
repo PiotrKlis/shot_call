@@ -12,24 +12,28 @@ class CallTheShotsButton extends _$CallTheShotsButton {
   Stream<CallButtonState> build() async* {
     final partyName = ref.watch(partyNameProvider);
     final nickname = ref.read(nicknameProvider);
-    yield* FirebaseFirestore.instance
-        .collection(FirestoreConstants.parties)
-        .doc(partyName)
-        .snapshots()
-        .map((snapshot) {
-      if (snapshot.exists) {
-        final alarmer = snapshot.data()?[FirestoreConstants.alarm] as String;
-        if (alarmer == nickname) {
-          return CallButtonState(CallButtonStatus.relieve, alarmer);
-        } else if (alarmer.isNotEmpty) {
-          return CallButtonState(CallButtonStatus.calling, alarmer);
+    if (partyName.isNotEmpty) {
+      yield* FirebaseFirestore.instance
+          .collection(FirestoreConstants.parties)
+          .doc(partyName)
+          .snapshots()
+          .map((snapshot) {
+        if (snapshot.exists) {
+          final alarmer = snapshot.data()?[FirestoreConstants.alarm] as String;
+          if (alarmer == nickname) {
+            return CallButtonState(CallButtonStatus.relieve, alarmer);
+          } else if (alarmer.isNotEmpty) {
+            return CallButtonState(CallButtonStatus.calling, alarmer);
+          } else {
+            return CallButtonState(CallButtonStatus.idle, null);
+          }
         } else {
-          return CallButtonState(CallButtonStatus.idle, null);
+          return CallButtonState(CallButtonStatus.empty, null);
         }
-      } else {
-        return CallButtonState(CallButtonStatus.empty, null);
-      }
-    });
+      });
+    } else {
+      yield* Stream.value(CallButtonState(CallButtonStatus.empty, null));
+    }
   }
 
   void callTheShots() {

@@ -35,5 +35,6 @@
   "offline_info" : "Brak internetów :(",
   "online_info" : "Internety wróciły :)",
   "notifications" : "Notyfikacje",
-  "party_already_exists" : "Impreza o tej nazwie już istnieje"
+  "party_already_exists" : "Impreza o tej nazwie już istnieje",
+  "version" : "Wersja"
 }

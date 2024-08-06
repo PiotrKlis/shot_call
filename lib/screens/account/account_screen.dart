@@ -5,6 +5,7 @@ import 'package:shot_call/common/extensions/context_extensions.dart';
 import 'package:shot_call/common/providers/nickname_provider.dart';
 import 'package:shot_call/common/providers/notification_permission_provider.dart';
 import 'package:shot_call/common/providers/party_name_provider.dart';
+import 'package:shot_call/common/providers/version_provider.dart';
 import 'package:shot_call/styleguide/dimens.dart';
 
 class AccountScreen extends ConsumerWidget {
@@ -75,6 +76,22 @@ class AccountScreen extends ConsumerWidget {
                   },
                 ),
               ],
+            ),
+            const SizedBox(
+              height: Dimens.mMargin,
+            ),
+            Text(
+              context.strings.version,
+              style: const TextStyle(
+                fontSize: Dimens.xmMargin,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              ref.watch(fetchVersionProvider).whenOrNull(
+                        data: (data) => data,
+                      ) ??
+                  '',
             ),
           ],
         ),

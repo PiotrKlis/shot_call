@@ -35,5 +35,6 @@
   "offline_info" : "No internet connection :(",
   "online_info" : "Internet connection is back :)",
   "notifications" : "Notifications",
-  "party_already_exists" : "Party with this name already exists :/"
+  "party_already_exists" : "Party with this name already exists :/",
+  "version" : "Version"
 }

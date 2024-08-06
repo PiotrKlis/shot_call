@@ -28,7 +28,8 @@ class NotificationsService {
           priority: Priority.max,
         ),
       );
-      final alarmer = message.notification?.title;
+      // final alarmer = message.notification?.title?.split(' ').first;
+      final alarmer = 'dupa';
       final defaultLocale = Platform.localeName;
       final title = (defaultLocale.contains('en'))
           ? '$alarmer needs backup!'
@@ -47,6 +48,11 @@ class NotificationsService {
     } catch (error, stacktrace) {
       Logger.error('notification display failed!', stacktrace);
     }
+  }
+
+  String getFirstWord(String sentence) {
+    List<String> words = sentence.split(' ');
+    return words.isNotEmpty ? words[0] : '';
   }
 
   void _initializePlugin() {

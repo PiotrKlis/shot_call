@@ -1,5 +1,1 @@
-- test na ajfonie małym i dużym preview
-  - notyfikacje nie działają na iOS
-  - apka nie chciała się odpalić na androidzie
-- assembleRelease na bitrajzie, wysyłka do google play i appStore
-- switch notyfikacji nie dziala na ajfonie
+- przy subskrypcji do notyfikacyjnego topiku, pokasuj spacje

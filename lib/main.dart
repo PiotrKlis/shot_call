@@ -49,12 +49,12 @@ class MyApp extends StatelessWidget {
   // big
   @override
   Widget build(BuildContext context) {
-    return DevicePreview(
-      builder: (BuildContext context) {
+    // return DevicePreview(
+    //   builder: (BuildContext context) {
         return MaterialApp.router(
-          useInheritedMediaQuery: true,
-          locale: DevicePreview.locale(context),
-          builder: DevicePreview.appBuilder,
+          // useInheritedMediaQuery: true,
+          // locale: DevicePreview.locale(context),
+          // builder: DevicePreview.appBuilder,
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
         );
-      },
-    );
+      // },
+    // );
   }
 }

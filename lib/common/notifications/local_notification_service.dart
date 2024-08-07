@@ -28,8 +28,7 @@ class NotificationsService {
           priority: Priority.max,
         ),
       );
-      // final alarmer = message.notification?.title?.split(' ').first;
-      final alarmer = 'dupa';
+      final alarmer = message.notification?.title?.split(' ').first;
       final defaultLocale = Platform.localeName;
       final title = (defaultLocale.contains('en'))
           ? '$alarmer needs backup!'

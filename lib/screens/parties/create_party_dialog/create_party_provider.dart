@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shot_call/common/extensions/string_extensions.dart';
 import 'package:shot_call/common/providers/nickname_provider.dart';
 import 'package:shot_call/common/providers/party_name_provider.dart';
 import 'package:shot_call/common/providers/should_show_error_provider.dart';
@@ -18,8 +19,9 @@ class CreateParty extends _$CreateParty {
   Future<void> createParty(String partyName, String password) async {
     try {
       await _removeDataFromOtherParties();
-      await _createNewParty(partyName, password);
-      await FirebaseMessaging.instance.subscribeToTopic(partyName);
+      await _createNewParty(partyName.removeAllWhiteSpaces(), password);
+      await FirebaseMessaging.instance
+          .subscribeToTopic(partyName.removeAllWhiteSpaces());
       state = const AsyncValue.data(null);
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);

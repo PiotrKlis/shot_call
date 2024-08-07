@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shot_call/common/extensions/string_extensions.dart';
 import 'package:shot_call/common/providers/nickname_provider.dart';
 import 'package:shot_call/common/providers/party_name_provider.dart';
 import 'package:shot_call/common/providers/should_show_error_provider.dart';
@@ -49,7 +50,8 @@ class PartyPassword extends _$PartyPassword {
   Future<void> _handleNewPartyParticipant(String partyName) async {
     await _addUserToParty(partyName);
     await _removeDataFromOtherParties();
-    await FirebaseMessaging.instance.subscribeToTopic(partyName);
+    await FirebaseMessaging.instance
+        .subscribeToTopic(partyName.removeAllWhiteSpaces());
     ref.read(partyNameProvider.notifier).update(partyName);
     state = const AsyncValue.data(null);
   }

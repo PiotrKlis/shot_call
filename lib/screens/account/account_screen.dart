@@ -26,6 +26,9 @@ class AccountScreen extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(
+              height: Dimens.sMargin,
+            ),
             Text(ref.read(nicknameProvider)),
             const SizedBox(
               height: Dimens.mMargin,
@@ -36,6 +39,9 @@ class AccountScreen extends ConsumerWidget {
                 fontSize: Dimens.xmMargin,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(
+              height: Dimens.sMargin,
             ),
             Text(ref.watch(partyNameProvider)),
             const SizedBox(
@@ -86,6 +92,9 @@ class AccountScreen extends ConsumerWidget {
                 fontSize: Dimens.xmMargin,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(
+              height: Dimens.sMargin,
             ),
             Text(
               ref.watch(fetchVersionProvider).whenOrNull(

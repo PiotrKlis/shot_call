@@ -1,1 +1,6 @@
 - przy subskrypcji do notyfikacyjnego topiku, pokasuj spacje
+- oddal subtitle spod headera w accoun
+
+RC:
+- Test na wersji rilisowej, testflight na ios, ręczna na androidzie
+- rilis i screenshoty

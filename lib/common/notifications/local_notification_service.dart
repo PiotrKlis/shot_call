@@ -28,8 +28,10 @@ class NotificationsService {
           priority: Priority.max,
         ),
       );
-      final alarmer = message.notification?.title?.split(' ').first;
       final defaultLocale = Platform.localeName;
+      final alarmer = (defaultLocale.contains('en'))
+          ? message.notification?.title?.split(' ').first ?? 'Somebody'
+          : message.notification?.title?.split(' ').first ?? 'Ktoś';
       final title = (defaultLocale.contains('en'))
           ? '$alarmer needs backup!'
           : '$alarmer potrzebuje wsparcia!';
@@ -47,11 +49,6 @@ class NotificationsService {
     } catch (error, stacktrace) {
       Logger.error('notification display failed!', stacktrace);
     }
-  }
-
-  String getFirstWord(String sentence) {
-    List<String> words = sentence.split(' ');
-    return words.isNotEmpty ? words[0] : '';
   }
 
   void _initializePlugin() {

@@ -30,15 +30,14 @@ class NotificationsService {
       );
       final defaultLocale = Platform.localeName;
       final alarmer = (defaultLocale.contains('en'))
-          ? message.notification?.title?.split(' ').first ?? 'Somebody'
-          : message.notification?.title?.split(' ').first ?? 'Ktoś';
+          ? message.data['title']?.split(' ')?.first ?? 'Somebody'
+          : message.data['title']?.split(' ')?.first ?? 'Ktoś';
       final title = (defaultLocale.contains('en'))
           ? '$alarmer needs backup!'
           : '$alarmer potrzebuje wsparcia!';
       final body = (defaultLocale.contains('en'))
           ? 'Immediately run to have a drink with him!'
           : 'Natychmiast rzuć wszystko i biegnij się napić!';
-
       await _notificationsPlugin.show(
         id,
         title,
@@ -75,33 +74,17 @@ class NotificationsService {
     String? body,
     String? payload,
   ) async {
+    Logger.log('onDidReceiveLocalNotification');
     await display(
       RemoteMessage(notification: RemoteNotification(title: title)),
     );
   }
 
   void _setFirebaseNotificationsListeners() {
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      Logger.log('getInitialMessage $message');
-      if (message != null) {
-        Logger.log('getInitialMessage != null $message');
-        display(message);
-      }
-    });
-    // To initialise when app is not terminated
     FirebaseMessaging.onMessage.listen((message) {
       Logger.log('onMessage $message');
-      if (message.notification != null) {
-        Logger.log('onMessage.notification != null $message');
-        display(message);
-      }
-    });
-    // To handle when app is open in
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      Logger.log('notification received! onMessageOpenedApp $message');
       display(message);
     });
-
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   }
 }

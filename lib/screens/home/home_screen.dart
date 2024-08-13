@@ -109,7 +109,7 @@ class _CallTheShotsSection extends ConsumerWidget {
         error: (error, stackTrace) {
           Logger.error(error, stackTrace);
           // return Text(context.strings.party_signup_suggestion);
-          return Text('Zapisz się na imprezę przegrywie');
+          return const Text('Zapisz się na imprezę przegrywie');
         },
         loading: () {
           return const Center(child: CircularProgressIndicator());

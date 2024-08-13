@@ -27,7 +27,7 @@ class NicknameAlertDialog extends ConsumerWidget {
           focusNode: FocusNode(),
           autofocus: true,
           validator: (value) => TextFieldValidator.validate(
-              value, context.strings.nickname_dialog_empty_error),
+              value, context.strings.nickname_dialog_empty_error,),
         ),
       ),
       actions: [

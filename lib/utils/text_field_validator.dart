@@ -12,7 +12,7 @@ class TextFieldValidator {
   }
 
   static Future<String?> validatePartyName(
-      String? value, String errorMessage) async {
+      String? value, String errorMessage,) async {
     final trimmedValue = value?.trim();
     if (trimmedValue != null && trimmedValue.isEmpty) {
       return errorMessage;

@@ -32,7 +32,6 @@ dependencies:
   package_info_plus: ^8.0.1
   firebase_analytics: ^10.10.7
 
-  flutter_gen: any
 flutter_launcher_icons:
   ios: true
   image_path_ios: "assets/images/icons/ios/ios_icon.png"

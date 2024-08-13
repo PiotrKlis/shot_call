@@ -7,7 +7,7 @@ part of 'call_button_provider.dart';
 // **************************************************************************
 
 String _$callTheShotsButtonHash() =>
-    r'61fbee610135420f48f6dd6c02e1b0cdce7759de';
+    r'0b456f76171e7b550b500932dc4c6618302c593c';
 
 /// See also [CallTheShotsButton].
 @ProviderFor(CallTheShotsButton)

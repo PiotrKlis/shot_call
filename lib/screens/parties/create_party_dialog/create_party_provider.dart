@@ -18,10 +18,11 @@ class CreateParty extends _$CreateParty {
 
   Future<void> createParty(String partyName, String password) async {
     try {
+      final adjustedPartyName =
+          partyName.removeSpecialChars().removeAllWhiteSpaces();
       await _removeDataFromOtherParties();
-      await _createNewParty(partyName.removeAllWhiteSpaces(), password);
-      await FirebaseMessaging.instance
-          .subscribeToTopic(partyName.removeAllWhiteSpaces());
+      await _createNewParty(adjustedPartyName, password);
+      await FirebaseMessaging.instance.subscribeToTopic(adjustedPartyName);
       state = const AsyncValue.data(null);
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);

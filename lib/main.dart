@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
     // return DevicePreview(
     //   builder: (BuildContext context) {
         return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           // useInheritedMediaQuery: true,
           // locale: DevicePreview.locale(context),
           // builder: DevicePreview.appBuilder,

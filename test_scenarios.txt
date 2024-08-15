@@ -36,6 +36,7 @@ Imprezowicze screen
 1. Pokazuje imprezowiczów ✅
 2. Aktualizacje na biężąco listę imprezowiczów ✅
 3. Wyjście z imprezy ✅
+4. Wyjście z imprezy odsubskrybowuje z motyfikacji z tej imprezy
 
 User screen
 

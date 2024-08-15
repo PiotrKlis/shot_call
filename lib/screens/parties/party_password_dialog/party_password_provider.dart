@@ -83,6 +83,7 @@ class PartyPassword extends _$PartyPassword {
       if (partyName.isNotEmpty) {
         await _removeAlarmer(partyName);
         await _removeParticipant(partyName);
+        await FirebaseMessaging.instance.unsubscribeFromTopic(partyName);
       }
     }();
   }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shot_call/common/providers/nickname_provider.dart';
 import 'package:shot_call/common/providers/party_name_provider.dart';
@@ -29,15 +30,16 @@ class PartyParticipants extends _$PartyParticipants {
     }
   }
 
-  void removeParticipant() {
+  Future<void> removeParticipant() async {
     final partyId = ref.read(partyNameProvider);
     final nickname = ref.read(nicknameProvider);
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection(FirestoreConstants.parties)
         .doc(partyId)
         .update({
       FirestoreConstants.participants: FieldValue.arrayRemove([nickname]),
     });
     ref.read(partyNameProvider.notifier).clear();
+    await FirebaseMessaging.instance.unsubscribeFromTopic(partyId);
   }
 }

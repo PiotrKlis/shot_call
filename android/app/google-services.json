@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:482820068298:android:78f27170b182d21f3eb533",
+        "android_client_info": {
+          "package_name": "com.mobile.apps.call_the_shots"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR4SjHicTGZUPsHCFab734wPk0YwoVcqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:482820068298:android:b985fecc85ef11ad3eb533",
         "android_client_info": {
           "package_name": "com.mobile.apps.shot_call"

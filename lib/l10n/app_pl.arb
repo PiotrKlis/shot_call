@@ -1,7 +1,7 @@
 {
   "nickname": "Ksywa",
   "party": "Impreza",
-  "idle_button_title": "Zaschło Ci w gardle i nie masz się z kim napić?",
+  "idle_button_title": "Jesteś spragniony a wszyscy gdzieś zniknęli?",
   "idle_button_subtitle": "Wciśnij przycisk żeby wezwać posiłki!",
   "calling_button_title": "{alarmer} potrzebuje pomocy!",
   "@calling_button_title": {
@@ -11,7 +11,7 @@
       }
     }
   },
-  "calling_button_subtitle": "Natychmiast rzuć wszytko co robisz i biegnij się z nim napić!",
+  "calling_button_subtitle": "Natychmiast rzuć wszytko co robisz i biegnij mu pomóc!",
   "relieve_button_title": "Nie lękaj się! Pomoc jest w drodze!",
   "relieve_button_subtitle": "Kliknij żeby odwołać alarm.",
   "party_signup_suggestion": "Zapisz się na imprezę przegrywie",

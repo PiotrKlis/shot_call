@@ -36,8 +36,8 @@ class NotificationsService {
           ? '$alarmer needs backup!'
           : '$alarmer potrzebuje wsparcia!';
       final body = (defaultLocale.contains('en'))
-          ? 'Immediately run to have a drink with him!'
-          : 'Natychmiast rzuć wszystko i biegnij się napić!';
+          ? 'Immediately run to help him!'
+          : 'Natychmiast rzuć wszystko i biegnij mu pomóc!';
       await _notificationsPlugin.show(
         id,
         title,

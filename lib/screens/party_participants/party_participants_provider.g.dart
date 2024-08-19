@@ -6,7 +6,7 @@ part of 'party_participants_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$partyParticipantsHash() => r'a540742ed73ef7033ff307958c78bd97d8f9014e';
+String _$partyParticipantsHash() => r'452378ddb712e58c39773e7fbee65a66412d48f9';
 
 /// See also [PartyParticipants].
 @ProviderFor(PartyParticipants)

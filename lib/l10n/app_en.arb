@@ -1,7 +1,7 @@
 {
   "nickname": "Nickname",
   "party": "Party",
-  "idle_button_title": "Thirsty and everybody is gone somewhere?",
+  "idle_button_title": "Everybody is gone somewhere?",
   "idle_button_subtitle": "Click the button to call for backup!",
   "calling_button_title": "{alarmer} needs help!",
   "@calling_button_title": {

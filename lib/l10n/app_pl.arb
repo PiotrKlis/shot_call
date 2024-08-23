@@ -1,7 +1,7 @@
 {
   "nickname": "Ksywa",
   "party": "Impreza",
-  "idle_button_title": "Jesteś spragniony a wszyscy gdzieś zniknęli?",
+  "idle_button_title": "Wszyscy gdzieś zniknęli?",
   "idle_button_subtitle": "Wciśnij przycisk żeby wezwać posiłki!",
   "calling_button_title": "{alarmer} potrzebuje pomocy!",
   "@calling_button_title": {
